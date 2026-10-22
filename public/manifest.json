@@ -1,7 +1,7 @@
 {
   "name": "XCaller",
   "short_name": "XCaller",
-  "description": "XCaller — secure messaging with realtime voice and video calling.",
+  "description": "XCaller — username-only messaging with realtime voice and video calling. Contact: rochlanirahul0@gmail.com · @rajani on XCaller.",
   "lang": "en",
   "start_url": "/chat/",
   "scope": "/chat/",

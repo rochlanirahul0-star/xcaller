@@ -73,6 +73,11 @@ Node 22+ with the built-in SQLite driver, `ws` for WebSocket, WebRTC for calls, 
 a no-build vanilla JavaScript client. No frameworks, no native Node modules, no
 external database.
 
+## Contact
+
+- Email: [rochlanirahul0@gmail.com](mailto:rochlanirahul0@gmail.com?subject=XCaller)
+- On XCaller: **@rajani**
+
 ## Security
 
 See [SECURITY.md](SECURITY.md) for the threat model and reporting. The short

@@ -3,7 +3,7 @@
    served stale-while-revalidate so a deploy is picked up on the next load.
    All paths are relative, so the app keeps working at /chat/. */
 
-var VERSION = 'xcaller-shell-v41';
+var VERSION = 'xcaller-shell-v42';
 var SHELL = [
   './',
   './index.html',
