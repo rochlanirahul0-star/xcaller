@@ -7,7 +7,7 @@
  * the same secret coturn is configured with. Nothing secret is ever logged.
  *
  * Configure with either:
- *   - /var/lib/hermes-agent/jarvis-chat/turn.json  { "host": "...", "secret": "..." }
+ *   - ./data/turn.json (or XC_TURN_FILE)  { "host": "...", "secret": "..." }
  *   - env TURN_HOST / TURN_SECRET
  * Without it the app still works on the same Wi-Fi (STUN only) and says so.
  */
