@@ -1,0 +1,26 @@
+{
+  "name": "xcaller",
+  "version": "3.14.0",
+  "private": true,
+  "description": "XCaller \u2014 self-hosted messaging with realtime voice and video calls.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "bash scripts/ci-smoke.sh",
+    "backup": "node scripts/backup.mjs",
+    "verify:push": "node scripts/verify-push.mjs"
+  },
+  "dependencies": {
+    "web-push": "^3.6.7",
+    "ws": "^8.18.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "AGPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rochlanirahul0-star/xcaller.git"
+  }
+}

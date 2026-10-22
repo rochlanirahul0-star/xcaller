@@ -1,0 +1,214 @@
+/* ==========================================================================
+   XCaller — final theme layer (loaded last).
+   One brand: XCaller teal. This file neutralises the older corporate palette,
+   fixes contrast defects measured in the public-readiness audit, and skins the
+   panels that were still light cards on a dark app.
+   ========================================================================== */
+
+:root {
+  /* corporate tokens were a light-blue palette; remap them to the dark theme
+     so any component still using them cannot paint a light surface. */
+  --xc-navy:        #0b1a18;
+  --xc-navy-soft:   #102a26;
+  --xc-accent:      #1f7a6d;
+  --xc-accent-dark: #166454;
+  --xc-bg:          #0d0d12;
+  --xc-surface:     #16161d;
+  --xc-surface-2:   #1f1f2a;
+  --xc-line:        #23232e;
+  --xc-line-strong: #2f2f3c;
+  --xc-ink:         #f4f4f6;
+  --xc-ink-soft:    #a6a6b4;
+  --xc-ok:          #22c55e;
+  --xc-danger:      #ef4444;
+
+  --tg-accent-dark: #166454;
+  --tg-link:        #7fd1c2;
+
+  --xc-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body { font-family: var(--xc-font); }
+
+/* ---------------------------------------------------------------- text ---- */
+a, .link { color: var(--tg-link); }
+.auth-switch, .field-label, .field-hint, .head-sub, .chat-time, .chat-preview {
+  color: #a6a6b4;
+}
+.picker-name b, .jc-fwd-name, .jc-call-name { color: #f4f4f6; }
+.picker-name small, .jc-call-sub { color: #a6a6b4; }
+.sender { color: var(--tg-link); }
+
+/* chat list time was 3.3:1 after the corporate override */
+.chat-time { color: #a6a6b4; }
+
+/* ------------------------------------------------------------ day pills --- */
+/* The app is dark in both OS schemes; the pill must not turn white in "light". */
+#messages .day-divider {
+  background: rgba(255, 255, 255, .10) !important;
+  color: #c9c9d4 !important;
+}
+#messages > .empty {
+  background: rgba(255, 255, 255, .06) !important;
+  color: #b9b9c6 !important;
+}
+
+/* --------------------------------------------------------------- ticks ---- */
+/* Outgoing bubbles are teal. The old dark-green ticks were 1.07:1. */
+.msg.out .tick { opacity: 1; }
+.msg.out .ticks[data-state="pending"],
+.msg.out .ticks[data-state="sent"],
+.msg.out .ticks[data-state="delivered"] {
+  color: rgba(255, 255, 255, .88) !important;
+}
+.msg.out .ticks[data-state="read"] { color: #d6ffe9 !important; }
+
+/* --------------------------------------------------------------- bubbles -- */
+.msg.in .bubble { background: #1f1f2a; color: #f4f4f6; }
+.msg-body a.msg-link { color: var(--tg-link); }
+.msg.out .msg-body a.msg-link { color: #ffffff; }
+.msg-system { color: #b9b9c6; }
+.msg .bubble.msg-service { background: rgba(255, 255, 255, .06); }
+.jc-sending .bubble { background: rgba(31, 122, 109, .55) !important; }
+
+/* ------------------------------------------------------- calls history ---- */
+.jc-calls { background: var(--tg-bg); }
+.jc-calls-head {
+  background: #16161d;
+  border-bottom: 1px solid #23232e;
+  box-shadow: none;
+}
+.jc-call-row { background: #16161d; border-bottom-color: #23232e; }
+.jc-call-row:hover { background: #1f1f2a; }
+.jc-call-row.missed .jc-call-name,
+.jc-call-row.missed .jc-call-sub { color: #ff9b8f; }
+.jc-call-again { color: var(--tg-link); }
+
+/* --------------------------------------------------------- chat menu ------ */
+.jc-menu-inner { background: #1f1f2a; box-shadow: 0 -8px 30px rgba(0, 0, 0, .5); }
+.jc-menu-item { color: #f4f4f6; }
+.jc-menu-item:hover { background: rgba(255, 255, 255, .06); }
+.jc-menu-item.danger { color: #ff9b8f; }
+
+/* ------------------------------------------------------ forward sheet ----- */
+.jc-fwd { background: rgba(0, 0, 0, .6); }
+.jc-fwd-card { background: #1f1f2a; box-shadow: 0 18px 50px rgba(0, 0, 0, .6); }
+.jc-fwd-title { color: #f4f4f6; }
+.jc-fwd-row { border-bottom-color: #2a2a36; }
+.jc-fwd-row:hover { background: rgba(255, 255, 255, .04); }
+.msg.in .jc-fwd-tag { color: var(--tg-link); }
+
+/* --------------------------------------------------- members + invite ----- */
+.jc-panel-title { color: #f4f4f6; }
+.jc-member-row { border-bottom-color: #23232e; }
+.jc-hide-row { color: #c9c9d4; }
+.jc-invite-title { color: #f4f4f6; }
+.jc-invite-sub { color: #a6a6b4; }
+.jc-invite-url {
+  background: #16161d;
+  border-color: #2f2f3c;
+  color: #f4f4f6;
+}
+.invite-banner { background: linear-gradient(135deg, #1f7a6d, #145a4f); }
+
+/* ---------------------------------------------------------- update bar ---- */
+.jc-update {
+  background: linear-gradient(90deg, #1f7a6d, #145a4f);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .4);
+}
+.jc-update-go { color: #0d3b33; }
+
+/* ----------------------------------------------------------- voice notes -- */
+.voice-note .vn-play, .voice-note .vn-fill { background: #1f7a6d; }
+.voice-note .vn-bar { background: rgba(255, 255, 255, .18); }
+
+/* ------------------------------------------------------------ focus/a11y -- */
+button:focus-visible, a:focus-visible, input:focus-visible,
+textarea:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--tg-link);
+  outline-offset: 2px;
+}
+
+/* iOS zooms the page when a focused control is under 16px. */
+@supports (-webkit-touch-callout: none) {
+  input, textarea, select { font-size: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+/* ------------------------------------------------------ update + changelog -- */
+/* The update card still carried a white surface from the old palette. */
+.xc-upd-card {
+  background: #1f1f2a;
+  border: 1px solid #2f2f3c;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, .55);
+}
+.xc-upd-title { color: #f4f4f6; }
+.xc-upd-text { color: #a6a6b4; }
+.xc-upd-later { color: #a6a6b4; }
+.xc-upd-ic { box-shadow: 0 8px 20px rgba(31, 122, 109, .35); }
+.xc-upd-go { box-shadow: 0 8px 18px rgba(31, 122, 109, .32); }
+.xc-upd-list {
+  list-style: none; margin: 0 0 18px; padding: 0;
+  text-align: left;
+}
+.xc-upd-list li {
+  position: relative; padding-left: 16px; margin: 7px 0;
+  font-size: 13px; line-height: 1.45; color: #c9c9d4;
+}
+.xc-upd-list li::before {
+  content: ""; position: absolute; left: 2px; top: 7px;
+  width: 6px; height: 6px; border-radius: 50%; background: #3fb3a0;
+}
+
+/* post-update “What’s new” */
+.xc-wn-mask {
+  position: fixed; inset: 0; z-index: 520;
+  background: rgba(0, 0, 0, .72);
+  display: flex; align-items: center; justify-content: center;
+  padding: 18px;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.xc-wn-card {
+  width: 100%; max-width: 420px;
+  background: #1f1f2a; color: #f4f4f6;
+  border: 1px solid #2f2f3c;
+  border-radius: 20px;
+  padding: 22px 20px 18px;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, .6);
+  animation: updPop .22s cubic-bezier(.2,.9,.3,1.1);
+}
+.xc-wn-badge {
+  width: 46px; height: 46px; border-radius: 14px;
+  display: grid; place-items: center;
+  background: #1f7a6d; color: #fff;
+  font-weight: 800; font-size: 16px; letter-spacing: .04em;
+  margin-bottom: 12px;
+}
+.xc-wn-kicker {
+  font-size: 11px; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: #3fb3a0; margin-bottom: 2px;
+}
+.xc-wn-title { font-size: 21px; font-weight: 700; letter-spacing: -.01em; }
+.xc-wn-sub { font-size: 13px; color: #a6a6b4; margin: 4px 0 14px; line-height: 1.4; }
+.xc-wn-list { list-style: none; margin: 0 0 18px; padding: 0; }
+.xc-wn-list li {
+  position: relative; padding-left: 18px; margin: 9px 0;
+  font-size: 13.5px; line-height: 1.5; color: #dcdce4;
+}
+.xc-wn-list li::before {
+  content: ""; position: absolute; left: 2px; top: 8px;
+  width: 6px; height: 6px; border-radius: 50%; background: #3fb3a0;
+}
+.xc-wn-go {
+  display: block; width: 100%; border: 0; border-radius: 999px;
+  padding: 13px 16px; background: #1f7a6d; color: #fff;
+  font: inherit; font-size: 15.5px; font-weight: 700; cursor: pointer;
+  box-shadow: 0 8px 18px rgba(31, 122, 109, .32);
+}
+.xc-wn-go:active { transform: scale(.97); }

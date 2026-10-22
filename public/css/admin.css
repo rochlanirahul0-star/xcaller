@@ -1,0 +1,178 @@
+/* XCaller — owner console. Telegram-ish dark palette, no framework. */
+:root {
+  --bg: #0e1621;
+  --bg2: #17212b;
+  --bg3: #1f2b38;
+  --line: #24323f;
+  --text: #e9eef3;
+  --muted: #8b9aa8;
+  --accent: #5288c1;
+  --danger: #e05b5b;
+  --ok: #5bb85b;
+  --warn: #e5b95b;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--bg); color: var(--text);
+  font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+button, input { font: inherit; color: inherit; }
+input {
+  background: var(--bg3); border: 1px solid var(--line); border-radius: 9px;
+  padding: 10px 12px; outline: none; min-width: 0;
+}
+input:focus { border-color: var(--accent); }
+button { cursor: pointer; background: var(--accent); border: 0; border-radius: 9px; padding: 10px 14px; font-weight: 600; }
+button.ghost { background: var(--bg3); border: 1px solid var(--line); font-weight: 500; }
+button.danger { background: var(--danger); }
+button.small { padding: 6px 10px; font-size: 13px; border-radius: 7px; }
+button:disabled { opacity: .55; cursor: default; }
+.muted { color: var(--muted); }
+
+/* ---- sign in ---- */
+.gate { display: grid; place-items: center; min-height: 100%; padding: 24px; }
+.gate-card {
+  width: min(360px, 100%); background: var(--bg2); border: 1px solid var(--line);
+  border-radius: 16px; padding: 26px; display: flex; flex-direction: column; gap: 12px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.45);
+}
+.gate-logo { font-size: 40px; text-align: center; }
+.gate-card h1 { margin: 0; font-size: 20px; text-align: center; }
+.gate-sub { margin: 0 0 8px; text-align: center; color: var(--muted); font-size: 13px; }
+.gate-error { color: var(--danger); margin: 0; font-size: 13px; }
+.gate-note { color: var(--muted); font-size: 12px; margin: 4px 0 0; text-align: center; }
+
+/* ---- shell ---- */
+.top {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  padding: 12px 16px; background: var(--bg2); border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 5;
+}
+.brand { font-size: 15px; }
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
+.tab { background: transparent; color: var(--muted); padding: 8px 12px; border-radius: 8px; font-weight: 500; }
+.tab.on { background: var(--bg3); color: var(--text); }
+.who { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: #55636f; display: inline-block; }
+.dot.on { background: var(--ok); box-shadow: 0 0 0 3px rgba(91,184,91,.18); }
+
+main { padding: 18px 16px 60px; max-width: 1180px; margin: 0 auto; }
+.panel { display: none; }
+.panel.on { display: block; }
+h2 { font-size: 15px; margin: 22px 0 10px; color: var(--muted); font-weight: 600; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+.row input { flex: 1 1 200px; }
+.row input.narrow { flex: 0 1 130px; }
+.chk { color: var(--muted); font-size: 13px; display: flex; align-items: center; gap: 6px; }
+.hint { color: var(--muted); font-size: 13px; margin: 0 0 14px; }
+
+/* ---- overview cards ---- */
+.cards { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+.card { background: var(--bg2); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+.card b { display: block; font-size: 24px; margin-bottom: 2px; }
+.card span { color: var(--muted); font-size: 12.5px; }
+
+/* ---- lists ---- */
+.list { display: flex; flex-direction: column; gap: 8px; }
+.item {
+  background: var(--bg2); border: 1px solid var(--line); border-radius: 11px;
+  padding: 12px 14px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+}
+.item .grow { flex: 1; min-width: 180px; }
+.item .title { font-weight: 600; }
+.item .sub { color: var(--muted); font-size: 12.5px; margin-top: 2px; word-break: break-word; }
+.pill { font-size: 11.5px; padding: 3px 8px; border-radius: 20px; background: var(--bg3); color: var(--muted); }
+.pill.admin { background: rgba(82,136,193,.22); color: #9dc3e8; }
+.pill.warn { background: rgba(224,146,70,.20); color: #f0b78a; font-weight: 600; }
+.pill.online { background: rgba(91,184,91,.18); color: #9ede9e; }
+.pill.banned { background: rgba(224,91,91,.18); color: #f0a3a3; }
+.pill.direct { background: rgba(229,185,91,.16); color: #f0d79b; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ---- transcript viewer ---- */
+.viewer {
+  position: fixed; inset: auto 0 0 0; top: 0; background: var(--bg);
+  z-index: 20; display: flex; flex-direction: column;
+}
+.viewer header {
+  display: flex; gap: 12px; align-items: center; padding: 12px 16px;
+  background: var(--bg2); border-bottom: 1px solid var(--line); position: sticky; top: 0;
+}
+.viewer header b { flex: 0 0 auto; }
+.viewer header span { flex: 1; }
+.viewer-body { padding: 16px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.msg { background: var(--bg2); border: 1px solid var(--line); border-radius: 11px; padding: 10px 12px; max-width: 760px; }
+.msg .meta { color: var(--muted); font-size: 12px; margin-bottom: 4px; display: flex; gap: 8px; flex-wrap: wrap; }
+.msg .body { white-space: pre-wrap; word-break: break-word; }
+.msg .att { color: var(--accent); font-size: 13px; margin-top: 4px; }
+.msg.deleted .body { color: var(--muted); font-style: italic; }
+
+.feed .item { border-left: 3px solid var(--accent); }
+.empty { color: var(--muted); padding: 16px; text-align: center; }
+
+.toast {
+  position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%);
+  background: var(--bg3); border: 1px solid var(--line); border-radius: 10px;
+  padding: 10px 16px; z-index: 40; max-width: 90vw;
+}
+.toast.err { border-color: var(--danger); color: #f3b6b6; }
+
+/* The sign-in gate and the transcript viewer are styled by class, and a class
+   rule beats the user-agent's [hidden] rule — so `el.hidden = true` did
+   nothing and the gate/viewer stayed on screen after signing in, covering the
+   console. Make hidden win, always. */
+[hidden] { display: none !important; }
+
+/* ---------------------------------------------------------------- phones */
+
+/* On a phone the console used to wrap its tabs onto three rows and break the
+   filter label over three lines. One scrollable tab strip, one-line controls. */
+@media (max-width: 760px) {
+  .top { grid-template-columns: 1fr !important; display: block !important; padding: 10px 12px 0 !important; }
+  .brand { margin-bottom: 8px; font-size: 14px; }
+  .tabs {
+    display: flex !important; flex-wrap: nowrap !important; gap: 6px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; padding: 2px 0 8px;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { flex: 0 0 auto; white-space: nowrap; padding: 8px 14px !important; }
+  .who { flex-wrap: wrap !important; gap: 8px !important; padding-bottom: 10px; }
+  .who #who-name { flex: 1 1 auto; }
+  main { padding: 10px 10px 28px !important; }
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; }
+  .row, .filter, .list-row, .chat-row { flex-wrap: wrap !important; }
+  .filter label, .filter span, .chk, .muted { white-space: nowrap; }
+  .chk { display: inline-flex; align-items: center; gap: 6px; }
+  .item { padding: 10px 12px !important; }
+  .item .actions, .item button { flex-wrap: wrap; }
+}
+
+/* ===== 14-day activity chart (Phase 2) ===== */
+#activity { margin-top: 22px; }
+#activity h2 { margin: 0 0 12px; }
+.activity-chart { display: flex; align-items: flex-end; gap: 6px; height: 140px; padding: 8px 4px 0;
+  background: rgba(127,127,127,.06); border-radius: 10px; overflow-x: auto; }
+.activity-bar { flex: 1 1 0; min-width: 18px; max-width: 42px; display: flex; flex-direction: column;
+  justify-content: flex-end; align-items: center; position: relative; height: 100%; }
+.activity-fill { width: 100%; border-radius: 4px 4px 0 0;
+  background: linear-gradient(180deg, #4aa3f0, #2d7cc0); min-height: 4px; transition: height .3s ease; }
+.activity-bar.zero .activity-fill { background: rgba(127,127,127,.25); }
+.activity-count { position: absolute; top: -16px; font-size: 10px; color: var(--muted, #98a2ad); font-weight: 600; }
+.activity-label { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 9.5px;
+  color: var(--muted, #98a2ad); align-self: flex-end; margin-top: 4px; height: 30px; }
+
+/* styled confirm modal (replaces window.confirm) */
+.xad-mask { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 9999;
+  display: grid; place-items: center; }
+.xad-card { background: #1d1f24; border: 1px solid #2c2f36; border-radius: 14px;
+  padding: 20px; width: min(360px, calc(100vw - 40px)); box-shadow: 0 12px 40px rgba(0,0,0,.5); }
+.xad-text { color: #e8e8ee; font-size: 14px; line-height: 1.45; }
+.xad-row { display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end; }
+.xad-btn { border: none; border-radius: 10px; padding: 9px 18px; font-size: 13px;
+  font-weight: 600; cursor: pointer; min-height: 36px; }
+.xad-no { background: rgba(255,255,255,.08); color: #c9cdd4; }
+.xad-yes { background: #1f7a6d; color: #fff; }
+.xad-danger { background: #c0392b; }

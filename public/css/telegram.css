@@ -1,0 +1,1024 @@
+/* ==========================================================================
+   XCaller — Telegram look & feel
+   Loaded last, after app.css and corporate.css, and deliberately opinionated:
+   this file owns the colours, typography, bubbles, motion and surface styling
+   so the app reads as Telegram rather than a corporate panel.
+
+   Doodles, tails, ticks, day pills and the light/dark pair are all here.
+   ========================================================================== */
+
+/* ------------------------------------------------------------------ tokens */
+
+:root {
+  /* Variant C (Bold Gradient) — Instagram-class: near-black surfaces,
+     violet→pink→orange signature gradient on outgoing + accents. */
+  --tg-accent:        #1f7a6d;
+  --tg-accent-dark:   #b62368;
+  --tg-accent-soft:   #2a1622;
+  --tg-bg:            #0d0d12;
+  --tg-pane:          #16161d;
+  --tg-side:          #16161d;
+  --tg-head:          #16161d;
+  --tg-head-line:     #23232e;
+  --tg-title:         #f4f4f6;
+  --tg-text:          #f4f4f6;
+  --tg-muted:         #9494a3;
+  --tg-line:          #23232e;
+  --tg-in:            #1f1f2a;
+  --tg-out:           #1f7a6d;
+  --tg-out-ink:       #ffffff;
+  --tg-hint:          #b9b9c6;
+  --tg-panel:         #1f1f2a;
+  --tg-shadow-1:      0 1px 2px rgba(0,0,0,.4);
+  --tg-shadow-2:      0 6px 24px rgba(0,0,0,.45);
+  --tg-shadow-3:      0 14px 44px rgba(0,0,0,.55);
+  --tg-radius:        14px;
+  --tg-radius-lg:     20px;
+  --tg-tick:          #7ea6c4;
+  --tg-tick-read:     #4fae4e;
+  --tg-doodle:        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'><g fill='none' stroke='%23ffffff' stroke-opacity='0.55' stroke-width='1.6' stroke-linecap='round'><path d='M22 34c4-6 11-6 14 0'/><circle cx='64' cy='28' r='7'/><path d='M104 22l8 8M112 22l-8 8'/><path d='M140 30c6 2 10 7 9 13'/><path d='M28 84c8 0 12 6 10 12'/><rect x='56' y='74' width='20' height='16' rx='4'/><path d='M100 78l10 10 10-10'/><circle cx='150' cy='82' r='6'/><path d='M20 138c6-4 13-2 15 4'/><path d='M62 132h18M71 123v18'/><path d='M108 128c5 6 12 6 17 0'/><rect x='140' y='124' width='18' height='18' rx='5'/></g></svg>");
+}
+
+/* Telegram's dark pair, used when the phone is in dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tg-bg:          #0d0d12;
+    --tg-pane:        #16161d;
+    --tg-side:        #16161d;
+    --tg-head:        #16161d;
+    --tg-head-line:   #23232e;
+    --tg-title:       #ffffff;
+    --tg-text:        #ffffff;
+    --tg-muted:       #8397a6;
+    --tg-line:        #101820;
+    --tg-in:          #182533;
+    --tg-out:         #2b5278;
+    --tg-out-ink:     #ffffff;
+    --tg-accent-soft: #21374d;
+    --tg-shadow-1:    0 1px 2px rgba(0,0,0,.4);
+    --tg-shadow-2:    0 6px 24px rgba(0,0,0,.45);
+    --tg-shadow-3:    0 14px 44px rgba(0,0,0,.55);
+    --tg-tick:        #8fb9e0;
+    --tg-doodle:      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'><g fill='none' stroke='%23ffffff' stroke-opacity='0.05' stroke-width='1.6' stroke-linecap='round'><path d='M22 34c4-6 11-6 14 0'/><circle cx='64' cy='28' r='7'/><path d='M104 22l8 8M112 22l-8 8'/><path d='M140 30c6 2 10 7 9 13'/><path d='M28 84c8 0 12 6 10 12'/><rect x='56' y='74' width='20' height='16' rx='4'/><path d='M100 78l10 10 10-10'/><circle cx='150' cy='82' r='6'/><path d='M20 138c6-4 13-2 15 4'/><path d='M62 132h18M71 123v18'/><path d='M108 128c5 6 12 6 17 0'/><rect x='140' y='124' width='18' height='18' rx='5'/></g></svg>");
+  }
+}
+
+/* -------------------------------------------------------------------- base */
+
+html, body { background: var(--tg-bg); color: var(--tg-text); }
+body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+::selection { background: rgba(31,122,109,.3); }
+:focus-visible { outline: 2px solid var(--tg-accent); outline-offset: 2px; border-radius: 8px; }
+
+/* ------------------------------------------------------------------- auth */
+
+#auth { background: radial-gradient(1200px 800px at 50% -10%, #12241f 0%, #0d1216 55%, #0a0d10 100%); }
+#auth .auth-card {
+  background: var(--tg-pane); border: 0; border-radius: 22px;
+  box-shadow: var(--tg-shadow-3); padding: 26px 22px 22px;
+  animation: cardIn .38s cubic-bezier(.2,.9,.25,1.05);
+}
+#auth .auth-logo {
+  background: #1f7a6d; color: #fff;
+  box-shadow: 0 8px 22px rgba(20,90,170,.35); border-radius: 50%;
+}
+#auth .auth-title { color: var(--tg-title); font-weight: 700; letter-spacing: -.2px; }
+#auth .auth-sub { color: var(--tg-muted); }
+#auth .field-label { color: var(--tg-muted); font-weight: 600; }
+#auth .field input {
+  background: var(--tg-accent-soft); border: 1.5px solid transparent; color: var(--tg-text);
+  border-radius: 12px; transition: border-color .15s, background .15s;
+}
+#auth .field input:focus { border-color: var(--tg-accent); background: var(--tg-pane); }
+#auth .btn.primary { background: var(--tg-accent); border-radius: 12px; box-shadow: 0 6px 18px rgba(51,144,236,.32); }
+#auth .link { color: var(--tg-accent); }
+.invite-banner { background: linear-gradient(135deg, #3d9be9, #2470c4) !important; border-radius: 16px !important; }
+
+/* ---------------------------------------------------------------- sidebar */
+
+#sidebar { background: var(--tg-side); border-right: 1px solid var(--tg-line); }
+
+#sidebar .pane-head, #chatpane > .pane-head {
+  background: var(--tg-head); border-bottom: 1px solid var(--tg-head-line);
+  box-shadow: 0 1px 0 rgba(16,35,47,.03);
+}
+#sidebar .pane-head { background: var(--tg-head); }
+#sidebar .head-title, #chatpane .head-title {
+  color: var(--tg-title) !important; font-weight: 600; font-size: 17px; letter-spacing: -.2px;
+}
+#sidebar .head-sub, #chatpane .head-sub { color: var(--tg-muted); font-size: 13px; }
+#sidebar .avatar { box-shadow: 0 0 0 2px rgba(51,144,236,.18); }
+#chatpane .head-sub.typing { color: var(--tg-accent); }
+
+#sidebar .searchbar { background: var(--tg-head); padding: 8px 10px 10px; border-bottom: 1px solid var(--tg-head-line); }
+#sidebar .searchbar input, #chat-search {
+  background: var(--tg-accent-soft); border: 1.5px solid transparent; color: var(--tg-text);
+  border-radius: 12px; padding: 10px 12px; font-size: 14.5px;
+}
+#sidebar .searchbar input::placeholder { color: var(--tg-muted); }
+#sidebar .searchbar input:focus { border-color: var(--tg-accent); background: var(--tg-pane); }
+
+/* avatars: Telegram puts a soft gradient under the initials */
+.avatar {
+  border-radius: 50%; font-weight: 600; letter-spacing: -.3px;
+  box-shadow: inset 0 -14px 24px rgba(0,0,0,.06);
+}
+.avatar-wrap { position: relative; }
+.avatar-dot {
+  position: absolute; right: 1px; bottom: 1px; width: 13px; height: 13px;
+  border-radius: 50%; background: #4dcd5e; border: 2.5px solid var(--tg-side);
+  box-shadow: 0 0 0 0 rgba(77,205,94,.55); animation: dotPulse 2.6s infinite;
+}
+
+/* chat rows: the Telegram list */
+#chatlist { background: var(--tg-side); }
+.chat-row {
+  padding: 9px 12px; gap: 12px; border: 0; border-bottom: 1px solid var(--tg-line);
+  background: var(--tg-side); transition: background .13s ease, transform .08s ease;
+}
+.chat-row:hover { background: rgba(51,144,236,.06); }
+.chat-row:active { transform: scale(.995); }
+.chat-row.active { background: var(--tg-accent) !important; border-left: 0; }
+.chat-row.active .chat-title, .chat-row.active .chat-preview,
+.chat-row.active .chat-time, .chat-row.active .who { color: #fff !important; }
+.chat-row.active .chat-preview { opacity: .88; }
+.chat-row.active .avatar-dot { border-color: var(--tg-accent); }
+.chat-row.active .badge { background: #fff !important; color: var(--tg-accent) !important; }
+.chat-title { color: var(--tg-title); font-weight: 600; font-size: 15.5px; }
+.chat-preview { color: var(--tg-muted); font-size: 13.5px; }
+.chat-preview .who { color: var(--tg-muted); font-weight: 500; }
+.chat-time { color: var(--tg-muted); font-size: 12px; }
+.badge {
+  background: var(--tg-accent); color: #fff; font-weight: 600; font-size: 12px;
+  min-width: 22px; height: 22px; border-radius: 11px; animation: badgePop .25s ease;
+}
+.badge.muted-mark { background: var(--tg-muted); color: #fff; }
+
+/* ------------------------------------------------------------- chat pane */
+
+#chatpane { background: var(--tg-bg); }
+#messages {
+  background-color: var(--tg-bg);
+  background-image: none;
+  background-size: 180px 180px;
+  padding: 12px 10px 8px;
+}
+html:not([data-theme="dark"]) #messages { background-blend-mode: normal; }
+
+/* day pills */
+.day-divider {
+  align-self: center; margin: 10px auto 6px; padding: 4px 12px;
+  background: rgba(16,35,47,.16); color: #fff; font-size: 12.5px; font-weight: 600;
+  border-radius: 999px; box-shadow: var(--tg-shadow-1); backdrop-filter: none;
+}
+@media (prefers-color-scheme: dark) { .day-divider { background: rgba(255,255,255,.14); } }
+
+/* ---------------------------------------------------------------- bubbles */
+
+.msg { gap: 8px; margin-bottom: 2px; }
+.msg .bubble {
+  background: var(--tg-in); color: var(--tg-text);
+  border: 0; border-radius: var(--tg-radius);
+  box-shadow: var(--tg-shadow-1); padding: 7px 11px 6px;
+  animation: bubbleIn .22s cubic-bezier(.2,.85,.3,1.05);
+  max-width: min(80%, 620px);
+}
+.msg.out .bubble { background: #1f7a6d; color: var(--tg-out-ink); box-shadow: 0 4px 14px rgba(31,122,109,.25); }
+.msg.out .msg-body, .msg.out .msg-body a.msg-link { color: var(--tg-out-ink); }
+.msg .msg-body { color: var(--tg-text); font-size: 15px; line-height: 1.36; }
+.msg .sender { color: var(--tg-accent); font-weight: 600; font-size: 13.5px; }
+.msg-meta, .time { color: var(--tg-muted); font-size: 11.5px; }
+.msg.out .msg-meta, .msg.out .time { color: rgba(255,255,255,.85); }
+@media (prefers-color-scheme: dark) { .msg.out .msg-meta, .msg.out .time { color: #a8c6e4; } }
+.msg-body a.msg-link { color: #1f7ad4; }
+
+/* ticks: one grey, two grey = delivered, two green = read */
+.tick { opacity: .5; margin-left: -3px; }
+.ticks .tick:first-child { margin-left: 0; }
+.msg.read .tick, .msg.delivered .tick { opacity: 1; color: var(--tg-tick); }
+.msg.read .tick { color: var(--tg-tick-read); }
+
+/* first/last bubble in a burst gets the Telegram tail */
+.msg.tail .bubble { border-bottom-right-radius: 4px; }
+.msg.in.tail .bubble { border-bottom-left-radius: 4px; border-bottom-right-radius: var(--tg-radius); }
+.msg.out.tail .bubble { border-bottom-right-radius: 4px; border-bottom-left-radius: var(--tg-radius); }
+
+.msg-system { color: #fff; background: rgba(16,35,47,.18); border-radius: 999px; padding: 3px 12px; align-self: center; font-size: 12.5px; }
+@media (prefers-color-scheme: dark) { .msg-system { background: rgba(255,255,255,.14); } }
+.msg.deleted .msg-body { color: var(--tg-muted); font-style: italic; }
+
+.reply-quote {
+  border-left: 3px solid var(--tg-accent); background: rgba(51,144,236,.10);
+  border-radius: 8px; padding: 5px 8px; margin-bottom: 4px;
+}
+.reply-quote b { color: var(--tg-accent); }
+
+.att-img { border-radius: 12px; box-shadow: var(--tg-shadow-1); }
+.att-file {
+  background: rgba(51,144,236,.10); border: 0; border-radius: 12px; padding: 8px 10px;
+}
+.att-file-ic { background: var(--tg-accent); color: #fff; border-radius: 8px; }
+.att-file-name { color: var(--tg-text); font-weight: 600; }
+.msg.out .att-file-name { color: var(--tg-out-ink); }
+.att-file-size { color: var(--tg-muted); }
+
+.voice-note { background: rgba(51,144,236,.10); border-radius: 999px; }
+.vn-play { background: var(--tg-accent); color: #fff; }
+
+/* --------------------------------------------------------------- composer */
+
+#composer {
+  background: var(--tg-head); border-top: 1px solid var(--tg-head-line);
+  padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+  gap: 6px;
+}
+#composer-input {
+  background: var(--tg-accent-soft); border: 1.5px solid transparent; color: var(--tg-text);
+  border-radius: 20px; padding: 10px 14px; font-size: 15px; transition: border-color .15s, background .15s;
+}
+#composer-input::placeholder { color: var(--tg-muted); }
+#composer-input:focus { border-color: var(--tg-accent); background: var(--tg-pane); }
+#composer .icon-btn { color: var(--tg-muted); }
+#composer .icon-btn:hover { color: var(--tg-accent); }
+.send-btn {
+  background: var(--tg-accent); color: #fff; border-radius: 50%;
+  box-shadow: 0 4px 14px rgba(51,144,236,.36);
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+.send-btn:active { transform: scale(.9); box-shadow: 0 2px 8px rgba(51,144,236,.4); }
+
+.attach-preview { background: var(--tg-accent-soft); border-radius: 12px; color: var(--tg-text); }
+
+/* ---------------------------------------------------------------- sheets */
+
+.jc-menu { background: rgba(16,35,47,.44); animation: fadeIn .16s ease; }
+.jc-menu-inner {
+  background: var(--tg-pane); border-radius: 20px 20px 0 0; box-shadow: var(--tg-shadow-3);
+  animation: sheetUp .26s cubic-bezier(.2,.9,.25,1.02); padding: 8px 8px calc(10px + env(safe-area-inset-bottom));
+}
+.jc-menu-item {
+  background: transparent; color: var(--tg-text); border-radius: 12px;
+  font-size: 15.5px; padding: 14px 12px; text-align: left;
+}
+.jc-menu-item:hover { background: rgba(51,144,236,.08); }
+.jc-menu-item.danger { color: #e0483c; }
+.jc-menu-title, .jc-panel-title, .jc-invite-title { color: var(--tg-title); }
+.jc-invite-sub, .jc-fwd-name { color: var(--tg-muted); }
+.jc-invite-url { background: var(--tg-accent-soft); border: 1.5px solid transparent; color: var(--tg-text); border-radius: 12px; }
+.jc-typed, .jc-member-row, .jc-fwd-row, .jc-call-row { border-radius: 12px; }
+.jc-typed-row:hover, .jc-fwd-row:hover, .jc-member-row:hover { background: rgba(51,144,236,.07); }
+.jc-fwd-tag { color: var(--tg-accent); }
+.jc-hide-row { color: var(--tg-text); }
+.jc-edited { color: var(--tg-muted); }
+
+.btn { border-radius: 12px; font-weight: 600; }
+.btn.primary { background: var(--tg-accent); border-color: var(--tg-accent); box-shadow: 0 4px 14px rgba(51,144,236,.28); }
+.btn.ghost { color: var(--tg-accent); background: rgba(51,144,236,.10); }
+.btn.danger { background: #e0483c; border-color: #e0483c; }
+
+/* modals (new chat, group, profile, forward target list) */
+.modal-backdrop { background: rgba(16,35,47,.44); animation: fadeIn .16s ease; }
+.modal-sheet {
+  background: var(--tg-pane); border-radius: 20px; box-shadow: var(--tg-shadow-3);
+  animation: sheetPop .26s cubic-bezier(.2,.9,.25,1.02);
+}
+.modal-title { color: var(--tg-title); font-weight: 700; }
+.modal-input {
+  background: var(--tg-accent-soft); border: 1.5px solid transparent; color: var(--tg-text); border-radius: 12px;
+}
+.modal-input:focus { border-color: var(--tg-accent); background: var(--tg-pane); }
+.picker-row, .modal-list > * { border-radius: 12px; }
+.picker-row:hover { background: rgba(51,144,236,.07); }
+.picker-name { color: var(--tg-text); }
+.chip { background: var(--tg-accent-soft); color: var(--tg-accent); border-radius: 999px; font-weight: 600; }
+
+.xc-confirm-card { background: var(--tg-pane); border-radius: 20px; box-shadow: var(--tg-shadow-3); animation: sheetPop .24s cubic-bezier(.2,.9,.25,1.02); }
+.xc-confirm-title { color: var(--tg-title); font-weight: 700; }
+.xc-confirm-text { color: var(--tg-muted); }
+
+/* calls sheet */
+.jc-calls { background: rgba(16,35,47,.44); animation: fadeIn .16s ease; }
+.jc-calls-head, .jc-calls-list { background: var(--tg-pane); }
+.jc-calls-title { color: var(--tg-title); font-weight: 700; }
+.jc-call-name { color: var(--tg-text); font-weight: 600; }
+.jc-call-sub { color: var(--tg-muted); }
+.jc-call-row.missed .jc-call-name, .jc-call-row.missed .jc-call-sub { color: #e0483c; }
+.jc-call-again { background: rgba(51,144,236,.12); color: var(--tg-accent); border-radius: 50%; }
+
+/* update banner + notification nudge read as Telegram service pills */
+.jc-update { background: var(--tg-pane); box-shadow: var(--tg-shadow-2); border-radius: 16px; border-left: 4px solid var(--tg-accent); }
+.jc-update-text { color: var(--tg-text); }
+.jc-update-go { background: var(--tg-accent); color: #fff; border-radius: 999px; font-weight: 600; }
+
+/* --------------------------------------------------------------- toasts */
+
+.toast-item {
+  background: rgba(23,33,43,.94); color: #fff; border-radius: 12px;
+  box-shadow: var(--tg-shadow-2); animation: toastIn .2s cubic-bezier(.2,.9,.3,1.05);
+}
+.toast-item.error { background: #d2453a; }
+
+/* ----------------------------------------------------------- call screen */
+
+#call-screen { background: #0f1c26; }
+.call-tile { background: #17212b; border-radius: 18px; box-shadow: var(--tg-shadow-2); }
+.tile-label { background: rgba(0,0,0,.5); color: #fff; border-radius: 999px; }
+.call-status { color: rgba(255,255,255,.85); }
+.ringing .call-avatar { animation: ringPulse 1.4s infinite; }
+.callbar .round-btn, .call-bar .round-btn { backdrop-filter: none; }
+
+#incoming { background: linear-gradient(160deg, rgba(15,28,38,.96), rgba(23,33,43,.97)); }
+.incoming-name { color: #fff; font-weight: 600; }
+
+/* ------------------------------------------------------------ animation */
+
+@keyframes bubbleIn { from { opacity: 0; transform: translateY(6px) scale(.97); } to { opacity: 1; transform: none; } }
+@keyframes sheetUp  { from { transform: translateY(24px); opacity: .6; } to { transform: none; opacity: 1; } }
+@keyframes sheetPop { from { transform: translateY(10px) scale(.97); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes fadeIn   { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cardIn   { from { transform: translateY(14px) scale(.98); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes toastIn  { from { transform: translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes badgePop { from { transform: scale(.5); } to { transform: none; } }
+@keyframes dotPulse { 0% { box-shadow: 0 0 0 0 rgba(77,205,94,.5); } 70% { box-shadow: 0 0 0 7px rgba(77,205,94,0); } 100% { box-shadow: 0 0 0 0 rgba(77,205,94,0); } }
+@keyframes ringPulse { 0% { transform: scale(1); } 50% { transform: scale(1.04); } 100% { transform: scale(1); } }
+@keyframes dots { 0%, 20% { content: '·'; } 40% { content: '··'; } 60%, 100% { content: '···'; } }
+
+/* "typing…" with moving dots, Telegram style */
+#chat-sub.typing::after {
+  content: '…';
+  display: inline-block; margin-left: 1px;
+  animation: dots 1.25s steps(1, end) infinite;
+}
+
+/* --------------------------------------------------------------- details */
+
+.scroll-y { scrollbar-width: thin; }
+#chatlist::-webkit-scrollbar, #messages::-webkit-scrollbar { width: 6px; }
+#chatlist::-webkit-scrollbar-thumb, #messages::-webkit-scrollbar-thumb {
+  background: rgba(16,35,47,.18); border-radius: 3px;
+}
+@media (prefers-color-scheme: dark) {
+  #chatlist::-webkit-scrollbar-thumb, #messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,.16); }
+}
+
+/* the empty states should feel intentional, not blank */
+#messages > .empty, #chatlist > .empty, .search-results .empty {
+  color: var(--tg-muted); text-align: center; margin-top: 28px;
+}
+#messages > .empty { background: rgba(255,255,255,.7); border-radius: 14px; padding: 14px 16px; align-self: center; }
+@media (prefers-color-scheme: dark) { #messages > .empty { background: rgba(23,33,43,.7); } }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+
+/* ==========================================================================
+   Corrections over the two earlier sheets (they win on ids and old colours)
+   ========================================================================== */
+
+/* the composer: Telegram's round blue plane, not a corporate rectangle */
+#composer-send {
+  background: var(--tg-accent) !important;
+  border-radius: 50% !important;
+  box-shadow: 0 4px 14px rgba(51,144,236,.36);
+}
+#composer-send:hover { background: var(--tg-accent-dark) !important; }
+#composer-input:focus, #composer-input:focus-visible {
+  outline: none !important; box-shadow: none !important;
+  border-color: rgba(51,144,236,.35) !important;
+}
+#chat-search:focus, .searchbar input:focus { outline: none !important; box-shadow: none !important; }
+
+/* time and ticks must be readable on the pale-green bubble */
+.msg.out .msg-meta, .msg.out .time { color: rgba(255,255,255,.85) !important; }
+.ticks[data-state="delivered"] { color: #7f9f88 !important; }
+.ticks[data-state="sent"], .ticks[data-state="pending"] { color: #8ba795 !important; }
+.ticks[data-state="read"] { color: #4fae4e !important; }
+.msg.out .ticks[data-state="pending"] { opacity: .65; }
+
+/* the tail belongs on the side the message came from */
+.msg.tail .bubble { border-bottom-right-radius: var(--tg-radius); border-bottom-left-radius: var(--tg-radius); }
+.msg.out.tail .bubble { border-bottom-right-radius: 4px; }
+.msg.in.tail .bubble  { border-bottom-left-radius: 4px; }
+.msg.grouped { margin-bottom: 1px; }
+.msg.grouped .bubble { box-shadow: none; }
+
+/* unread badge on a highlighted row */
+.chat-row.active .chat-time { color: rgba(255,255,255,.85) !important; }
+
+/* lighter, Telegram-like unread divider for the list */
+.chat-row .badge { margin-left: 6px; }
+
+/* profile / settings buttons in the sidebar header keep their shape */
+#sidebar .icon-btn, #chatpane .icon-btn { color: var(--tg-accent); }
+
+/* the app should fill the phone screen with the right tint behind the status bar */
+body { background: var(--tg-bg); }
+
+/* ==========================================================================
+   Bubble tails without needing the JS class (the renderer drops it):
+   the last bubble of a run gets the tail, the ones above stay square there.
+   :has() is supported on any WebView current enough to run this app; where it
+   is not, every bubble simply keeps its tail, which still looks right.
+   ========================================================================== */
+.msg.out .bubble { border-bottom-right-radius: 4px; border-bottom-left-radius: var(--tg-radius); }
+.msg.in  .bubble { border-bottom-left-radius: 4px;  border-bottom-right-radius: var(--tg-radius); }
+.msg.out:has(+ .msg.out) .bubble { border-bottom-right-radius: var(--tg-radius); }
+.msg.in:has(+ .msg.in)  .bubble { border-bottom-left-radius: var(--tg-radius); }
+/* a run ends at a day divider or the end of the list: nothing to do, the radius is already there */
+
+/* keep some air between a run of bubbles and the next message */
+.msg + .msg.out, .msg + .msg.in { margin-top: 2px; }
+.msg.out + .msg.in, .msg.in + .msg.out { margin-top: 6px; }
+
+/* ==========================================================================
+   Telegram list layout: full-bleed rows, flat search, a title header
+   ========================================================================== */
+
+/* rows go edge to edge with hairline dividers, never cards */
+#chatlist { padding: 0 !important; }
+.chat-row {
+  margin: 0 !important; border-radius: 0 !important; border: 0 !important;
+  border-bottom: 1px solid var(--tg-line) !important;
+  box-shadow: none !important; padding: 9px 12px 9px 10px !important;
+}
+.chat-row:last-child { border-bottom: 0 !important; }
+
+/* the side bar header: avatar opens your profile, the title is the app itself */
+#sidebar .pane-head { padding: 8px 10px !important; gap: 10px !important; }
+#sidebar .head-names #me-name, #sidebar .head-names #me-username { display: none !important; }
+#sidebar .head-names::before {
+  content: 'XCaller';
+  font-size: 20px; font-weight: 600; letter-spacing: -.3px; color: var(--tg-title);
+}
+#sidebar .net-dot { position: static !important; margin: 0 0 0 2px !important; order: 3; }
+#sidebar .icon-btn { color: var(--tg-muted) !important; }
+#sidebar .icon-btn:hover { color: var(--tg-accent) !important; }
+
+/* one flat search field, no wrapper card */
+#sidebar .searchbar {
+  padding: 4px 10px 10px !important; border: 0 !important;
+  background: var(--tg-head) !important; box-shadow: none !important;
+}
+#sidebar .searchbar input, #chat-search {
+  background: #f1f4f7 !important; border: 1.5px solid transparent !important;
+  border-radius: 10px !important; padding: 9px 12px !important; font-size: 15px !important;
+  color: var(--tg-text) !important; box-shadow: none !important;
+}
+#sidebar .searchbar input::placeholder { color: #8f9aa5 !important; }
+#sidebar .searchbar input:focus { background: var(--tg-pane) !important; border-color: rgba(51,144,236,.4) !important; }
+@media (prefers-color-scheme: dark) {
+  #sidebar .searchbar input, #chat-search { background: #232f3b !important; }
+  #sidebar .searchbar input::placeholder { color: #7c8b98 !important; }
+}
+
+/* readable secondary text (Telegram's greys, tuned for contrast) */
+.chat-preview, .chat-preview .who { color: #6f7c88 !important; }
+.chat-time { color: #7f8b97 !important; font-size: 12.5px !important; }
+.modal-title { font-weight: 600 !important; }
+.head-sub, #chat-sub { color: #7f8b97 !important; }
+#chat-sub.typing { color: var(--tg-accent) !important; }
+
+/* avatars: soften light colours so white initials always read */
+.avatar { background-image: linear-gradient(rgba(0,0,0,.10), rgba(0,0,0,.10)) !important; text-shadow: 0 1px 1px rgba(0,0,0,.22); }
+#sidebar .avatar, .chat-row.active .avatar { background-image: linear-gradient(rgba(0,0,0,.10), rgba(0,0,0,.10)) !important; }
+
+/* the web-push nudge, in Telegram clothing */
+#xc-nudge {
+  border-radius: 14px !important; font-size: 14px !important;
+  background: rgba(23,33,43,.95) !important; box-shadow: var(--tg-shadow-3) !important;
+}
+#xc-nudge button { border-radius: 999px !important; min-height: 34px; }
+
+/* ==========================================================================
+   Final Telegram pass: row rhythm, search, composer order, desktop quiet state
+   ========================================================================== */
+
+/* rows: Telegram's ~72dp rhythm */
+.chat-row { padding: 10px 12px !important; min-height: 72px !important; align-items: center !important; }
+#sidebar .searchbar { padding: 2px 10px 8px !important; }
+#sidebar .searchbar input, #chat-search {
+  min-height: 40px !important;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2390a0ae' stroke-width='2' stroke-linecap='round'><circle cx='11' cy='11' r='7'/><path d='M16.5 16.5L21 21'/></svg>") !important;
+  background-repeat: no-repeat !important;
+  background-position: 12px center !important;
+  background-size: 17px 17px !important;
+  padding-left: 38px !important;
+}
+#sidebar .searchbar input::placeholder { color: #8b97a3 !important; }
+.chat-preview, .chat-preview .who { color: #67737f !important; }
+.chat-time { color: #77838f !important; }
+.chat-row.active .chat-preview, .chat-row.active .chat-time { color: rgba(255,255,255,.9) !important; }
+
+/* composer: attach · message · emoji · camera · mic/send */
+#composer { display: flex; align-items: center; }
+#composer-attach { order: 1; }
+#composer-input  { order: 2; flex: 1 1 auto; }
+#jc-emoji        { order: 3; }
+#composer-camera { order: 4; }
+#jc-mic          { order: 5; }
+#composer-send   { order: 6; }
+#composer .icon-btn { color: #8d9aa7 !important; width: 40px; height: 40px; min-width: 40px; }
+#composer .icon-btn:hover { color: var(--tg-accent) !important; }
+#jc-emoji { color: #8d9aa7 !important; }
+
+/* the connection dot: small and beside the title, not floating in the middle */
+#sidebar .pane-head { align-items: center; }
+#sidebar .net-dot { width: 8px !important; height: 8px !important; opacity: .9; }
+
+/* wide screens: nothing open yet → a calm Telegram-style placeholder, no live composer */
+@media (min-width: 900px) {
+  body:not(.chat-open) #composer { display: none !important; }
+  body:not(.chat-open) #back-btn { visibility: hidden !important; }
+  body:not(.chat-open) #callbtn-audio, body:not(.chat-open) #callbtn-video { display: none !important; }
+  body:not(.chat-open) #messages::before {
+    content: 'Select a chat to start messaging';
+    display: block; width: max-content; margin: 60px auto 0; padding: 6px 16px;
+    background: rgba(16,35,47,.14); color: #fff; border-radius: 999px; font-size: 13.5px; font-weight: 600;
+  }
+}
+
+/* ==========================================================================
+   WhatsApp palette — the colours the app now uses everywhere.
+   Both modes are defined as pairs so text can never sit on the wrong
+   background (the old grey-on-dark preview was unreadable).
+
+   Light            Dark
+   list      #ffffff  #111b21
+   header    #ffffff  #202c33
+   chat bg   #efeae2  #0b141a
+   outgoing  #d9fdd3  #005c4b
+   incoming  #ffffff  #202c33
+   ink       #111b21  #e9edef
+   ink-2     #667781  #8696a0
+   accent    #00a884  #00a884
+   badge     #25d366  #00a884
+   read tick #53bdeb  #53bdeb
+   ========================================================================== */
+
+:root {
+  /* Variant C: near-black surfaces, pink accent, gradient outgoing */
+  --wa-list:      #16161d;
+  --wa-head:      #16161d;
+  --wa-head-line: #23232e;
+  --wa-chat:      #0d0d12;
+  --wa-out:       #1f7a6d;
+  --wa-in:        #1f1f2a;
+  --wa-ink:       #f4f4f6;
+  --wa-ink-2:     #9494a3;
+  --wa-ink-3:     #9494a3;
+  --wa-accent:    #1f7a6d;
+  --wa-badge:     #1f7a6d;
+  --wa-active:    #241a22;
+  --wa-tick-read: #53bdeb;
+  --wa-doodle:    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'><g fill='none' stroke='%23b9b0a4' stroke-opacity='0.55' stroke-width='1.7' stroke-linecap='round'><path d='M28 40c6-9 16-9 21 0'/><circle cx='92' cy='34' r='9'/><path d='M150 26l9 9M159 26l-9 9'/><path d='M206 44c8 3 13 10 12 18'/><path d='M34 110c11 0 16 8 14 17'/><rect x='84' y='98' width='26' height='20' rx='5'/><path d='M146 100l12 12 12-12'/><circle cx='216' cy='108' r='8'/><path d='M26 180c8-6 17-3 20 5'/><path d='M88 172h22M99 161v22'/><path d='M152 168c7 8 16 8 23 0'/><rect x='206' y='162' width='24' height='22' rx='6'/><path d='M40 236h20M50 226v20'/><circle cx='118' cy='232' r='7'/><path d='M178 226c6 6 14 6 20 0'/></g></svg>");
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --wa-list:      #16161d;
+    --wa-head:      #16161d;
+    --wa-head-line: #23232e;
+    --wa-chat:      #0d0d12;
+    --wa-out:       #1f7a6d;
+    --wa-in:        #1f1f2a;
+    --wa-ink:       #f4f4f6;
+    --wa-ink-2:     #9494a3;
+    --wa-ink-3:     #9494a3;
+    --wa-accent:    #1f7a6d;
+    --wa-badge:     #1f7a6d;
+    --wa-active:    #241a22;
+    --wa-tick-read: #53bdeb;
+    --wa-doodle:    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'><g fill='none' stroke='%23ffffff' stroke-opacity='0.045' stroke-width='1.7' stroke-linecap='round'><path d='M28 40c6-9 16-9 21 0'/><circle cx='92' cy='34' r='9'/><path d='M150 26l9 9M159 26l-9 9'/><path d='M206 44c8 3 13 10 12 18'/><path d='M34 110c11 0 16 8 14 17'/><rect x='84' y='98' width='26' height='20' rx='5'/><path d='M146 100l12 12 12-12'/><circle cx='216' cy='108' r='8'/><path d='M26 180c8-6 17-3 20 5'/><path d='M88 172h22M99 161v22'/><path d='M152 168c7 8 16 8 23 0'/><rect x='206' y='162' width='24' height='22' rx='6'/><path d='M40 236h20M50 226v20'/><circle cx='118' cy='232' r='7'/><path d='M178 226c6 6 14 6 20 0'/></g></svg>");
+  }
+}
+
+/* keep the pale Telegram variables pointing at the WhatsApp palette so every
+   rule written above lands on the right colour in both modes */
+:root {
+  --tg-bg: var(--wa-chat); --tg-pane: var(--wa-list); --tg-side: var(--wa-list);
+  --tg-head: var(--wa-head); --tg-head-line: var(--wa-head-line);
+  --tg-title: var(--wa-ink); --tg-text: var(--wa-ink); --tg-muted: var(--wa-ink-2);
+  --tg-line: var(--wa-head-line); --tg-in: var(--wa-in); --tg-out: var(--wa-out);
+  --tg-out-ink: #ffffff; --tg-accent: var(--wa-accent); --tg-accent-dark: #b62368;
+  --tg-accent-soft: rgba(214,41,118,.14); --tg-tick: var(--wa-ink-2); --tg-tick-read: var(--wa-tick-read);
+  --tg-doodle: var(--wa-doodle); --tg-radius: 8px; --tg-radius-lg: 16px;
+}
+
+/* ------------------------------------------------------------------ chrome */
+
+html, body, #sidebar, #chatlist { background: var(--wa-list) !important; color: var(--wa-ink) !important; }
+#sidebar, #chatpane > .pane-head, #sidebar .pane-head {
+  background: var(--wa-head) !important; border-color: var(--wa-head-line) !important;
+}
+#sidebar .head-title, #chatpane .head-title, #sidebar .head-names::before { color: var(--wa-ink) !important; }
+#sidebar .head-sub, #chatpane .head-sub, #chat-sub { color: var(--wa-ink-2) !important; }
+#chat-sub.typing { color: var(--wa-accent) !important; }
+#sidebar .icon-btn, #chatpane .icon-btn { color: var(--wa-ink-2) !important; }
+
+/* chat list rows: WhatsApp highlights the open chat in grey, not blue */
+.chat-row { background: var(--wa-list) !important; border-bottom: 1px solid var(--wa-head-line) !important; }
+.chat-row:hover { background: rgba(0,168,132,.05) !important; }
+.chat-row.active { background: var(--wa-active) !important; }
+.chat-row.active .chat-title, .chat-row.active .chat-preview, .chat-row.active .chat-time,
+.chat-row.active .who { color: var(--wa-ink) !important; }
+.chat-title { color: var(--wa-ink) !important; }
+.chat-preview, .chat-preview .who { color: var(--wa-ink-2) !important; }
+.chat-time { color: var(--wa-ink-3) !important; }
+.chat-row.active .chat-time { color: var(--wa-accent) !important; }
+.badge { background: var(--wa-badge) !important; color: #fff !important; }
+.chat-row.active .badge { background: var(--wa-badge) !important; color: #fff !important; }
+
+/* search */
+#sidebar .searchbar { background: var(--wa-head) !important; }
+#sidebar .searchbar input, #chat-search {
+  background: rgba(134,150,160,.12) !important; color: var(--wa-ink) !important;
+}
+#sidebar .searchbar input::placeholder, #chat-search::placeholder { color: var(--wa-ink-2) !important; }
+#sidebar .searchbar input:focus, #chat-search:focus { border-color: var(--wa-accent) !important; background: var(--wa-head) !important; }
+
+/* ------------------------------------------------------------- conversation */
+
+#chatpane { background: var(--wa-chat) !important; }
+#messages { background-color: var(--wa-chat) !important; background-image: none !important; }
+
+.msg .bubble {
+  background: var(--wa-in) !important; color: var(--wa-ink) !important;
+  border-radius: var(--tg-radius) !important;
+  box-shadow: 0 1px 0.5px rgba(11,20,26,.13) !important;
+  padding: 6px 9px 5px !important;
+}
+.msg.out .bubble { background: #1f7a6d !important; }
+.msg .msg-body, .msg .msg-body a.msg-link { color: var(--wa-ink) !important; }
+.msg .sender { color: var(--wa-accent) !important; }
+.msg.out .sender { color: var(--wa-accent) !important; }
+.msg .msg-meta, .msg .time { color: var(--wa-ink-2) !important; }   /* readable in both modes */
+.msg .ticks[data-state="read"] { color: var(--wa-tick-read) !important; }
+.msg .ticks[data-state="delivered"], .msg .ticks[data-state="sent"],
+.msg .ticks[data-state="pending"] { color: var(--wa-ink-2) !important; }
+@media (prefers-color-scheme: dark) {
+  .msg .msg-meta, .msg .time { color: rgba(233,237,239,.62) !important; }
+  .msg .ticks[data-state="delivered"], .msg .ticks[data-state="sent"],
+  .msg .ticks[data-state="pending"] { color: rgba(233,237,239,.62) !important; }
+}
+
+/* timestamps sit on the same line as a short message (WhatsApp) */
+.msg .bubble { display: block; }
+.msg .msg-meta { float: right; margin: 6px 0 -2px 10px; white-space: nowrap; }
+.msg .msg-body::after { content: ''; display: block; clear: both; }
+
+/* tails: WhatsApp squares the corner where the bubble points */
+.msg.out .bubble { border-bottom-right-radius: 3px !important; border-bottom-left-radius: var(--tg-radius) !important; }
+.msg.in  .bubble { border-bottom-left-radius: 3px !important;  border-bottom-right-radius: var(--tg-radius) !important; }
+.msg.out:has(+ .msg.out) .bubble { border-bottom-right-radius: var(--tg-radius) !important; }
+.msg.in:has(+ .msg.in)  .bubble { border-bottom-left-radius: var(--tg-radius) !important; }
+.msg.out + .msg.out, .msg.in + .msg.in { margin-top: 2px !important; }
+.msg.out + .msg.in, .msg.in + .msg.out { margin-top: 8px !important; }
+
+/* day pills + system notes */
+.day-divider, .msg-system {
+  background: var(--wa-chat) !important; color: var(--wa-ink-2) !important;
+  box-shadow: 0 1px 0.5px rgba(11,20,26,.13) !important; border-radius: 7px !important;
+}
+@media (prefers-color-scheme: dark) {
+  .day-divider, .msg-system { background: #182229 !important; color: var(--wa-ink-2) !important; }
+}
+
+/* quotes, attachments, voice notes */
+.reply-quote { border-left-color: var(--wa-accent) !important; background: rgba(0,168,132,.10) !important; }
+.reply-quote b { color: var(--wa-accent) !important; }
+.att-file { background: rgba(134,150,160,.12) !important; }
+.att-file-ic { background: var(--wa-accent) !important; color: #fff !important; }
+.att-file-name { color: var(--wa-ink) !important; }
+.att-file-size { color: var(--wa-ink-2) !important; }
+.voice-note { background: rgba(134,150,160,.12) !important; }
+.vn-play { background: var(--wa-accent) !important; }
+#messages > .empty { background: var(--wa-head) !important; color: var(--wa-ink-2) !important; }
+
+/* ---------------------------------------------------------------- composer */
+
+#composer { background: var(--wa-head) !important; border-top: 1px solid var(--wa-head-line) !important; }
+#composer-input {
+  background: var(--wa-list) !important; color: var(--wa-ink) !important;
+  border: 1px solid var(--wa-head-line) !important; border-radius: 22px !important;
+}
+@media (prefers-color-scheme: dark) { #composer-input { background: #2a3942 !important; border-color: #2a3942 !important; } }
+#composer-input::placeholder { color: var(--wa-ink-2) !important; }
+#composer .icon-btn, #jc-emoji { color: var(--wa-ink-2) !important; }
+#composer .icon-btn:hover, #jc-emoji:hover { color: var(--wa-accent) !important; }
+#composer-send { background: var(--wa-accent) !important; box-shadow: none !important; }
+#composer-send:hover { background: #017561 !important; }
+#jc-mic { color: #5d7690 !important; }
+
+/* ------------------------------------------------------- sheets and modals */
+
+.jc-menu-inner, .modal-sheet, .xc-confirm-card, .jc-calls-head, .jc-calls-list,
+.jc-menu-item, .picker-row, .jc-typed-row, .jc-fwd-row, .jc-member-row, .jc-invite-url {
+  background: var(--wa-list) !important; color: var(--wa-ink) !important;
+}
+.jc-menu-item:hover, .picker-row:hover, .jc-typed-row:hover, .jc-fwd-row:hover, .jc-member-row:hover { background: rgba(134,150,160,.12) !important; }
+.jc-menu-title, .jc-panel-title, .jc-invite-title, .modal-title, .xc-confirm-title,
+.jc-calls-title, .jc-call-name, .picker-name, .jc-hide-row { color: var(--wa-ink) !important; }
+.jc-invite-sub, .jc-fwd-name, .xc-confirm-text, .jc-call-sub, .jc-edited { color: var(--wa-ink-2) !important; }
+.jc-call-row.missed .jc-call-name, .jc-call-row.missed .jc-call-sub { color: #ea0038 !important; }
+.xc-confirm-card, .modal-sheet { border-radius: 16px !important; }
+.btn.primary { background: var(--wa-accent) !important; border-color: var(--wa-accent) !important; color: #fff !important; box-shadow: none !important; }
+.btn.ghost { color: var(--wa-accent) !important; background: rgba(0,168,132,.10) !important; }
+.chip { background: rgba(0,168,132,.12) !important; color: var(--wa-accent) !important; }
+.jc-call-again { background: rgba(0,168,132,.12) !important; color: var(--wa-accent) !important; }
+.jc-update { background: var(--wa-list) !important; border-left-color: var(--wa-accent) !important; }
+.jc-update-text { color: var(--wa-ink) !important; }
+.jc-update-go { background: var(--wa-accent) !important; color: #fff !important; }
+#auth .btn.primary { background: var(--wa-accent) !important; }
+#auth .field input { background: rgba(134,150,160,.12) !important; color: var(--wa-ink) !important; }
+#auth .auth-card { background: var(--wa-list) !important; }
+#auth .auth-title { color: var(--wa-ink) !important; }
+#auth .auth-sub, #auth .field-label { color: var(--wa-ink-2) !important; }
+#auth .link { color: var(--wa-accent) !important; }
+#auth { background: linear-gradient(160deg, #0d8f75, #075e54) !important; }
+
+/* the "connection" dot follows the accent */
+#sidebar .net-dot { background: var(--wa-accent) !important; }
+
+/* the time inside an outgoing bubble: must beat the older .msg.out rule
+   (white-ish on the dark green bubble, grey on the light green one) */
+.msg.out .msg-meta, .msg.out .time { color: rgba(255,255,255,.92) !important; }
+.msg.out .ticks[data-state="delivered"], .msg.out .ticks[data-state="sent"],
+.msg.out .ticks[data-state="pending"] { color: #5b6b76 !important; }
+@media (prefers-color-scheme: dark) {
+  .msg.out .msg-meta, .msg.out .time { color: rgba(255,255,255,.92) !important; }
+  .msg.out .ticks[data-state="delivered"], .msg.out .ticks[data-state="sent"],
+  .msg.out .ticks[data-state="pending"] { color: rgba(233,237,239,.62) !important; }
+  .msg.out .ticks[data-state="read"] { color: var(--wa-tick-read) !important; }
+}
+
+/* ==========================================================================
+   Last details: date pill, unread emphasis, bubble breathing room
+   ========================================================================== */
+
+/* WhatsApp's date chip is a white pill on the beige wallpaper */
+.day-divider {
+  background: #ffffff !important; color: #54656f !important;
+  box-shadow: 0 1px 0.5px rgba(11,20,26,.13) !important;
+  font-weight: 500 !important; font-size: 12.5px !important;
+}
+@media (prefers-color-scheme: dark) { .day-divider { background: #182229 !important; color: #8696a0 !important; } }
+.msg-system { color: #54656f !important; }
+@media (prefers-color-scheme: dark) { .msg-system { color: #8696a0 !important; } }
+
+/* unread chats read bolder, like WhatsApp */
+.chat-row:has(.badge) .chat-title { font-weight: 700 !important; color: var(--wa-ink) !important; }
+.chat-row:has(.badge) .chat-preview { color: var(--wa-ink) !important; font-weight: 500 !important; }
+.chat-row:has(.badge) .chat-time { color: var(--wa-badge) !important; }
+
+/* bubbles: never clip a trailing emoji, and clear the floated time properly */
+.msg .bubble { overflow: visible !important; padding: 6px 10px 5px !important; }
+.msg .bubble::after { content: ''; display: block; clear: both; }
+.msg .msg-body { overflow-wrap: anywhere; }
+.msg .msg-meta { float: right; margin: 5px 0 -2px 10px; }
+
+/* safety net for the app itself: anything toggled with el.hidden must vanish,
+   even when a class rule sets its display (sheets, modals, panels). */
+[hidden] { display: none !important; }
+
+/* ==========================================================================
+   Polish pass (v2.9) — depth and life without changing the identity.
+   ========================================================================== */
+
+/* headers: soft tint + real separation */
+#sidebar .pane-head, #chatpane > .pane-head {
+  background: linear-gradient(180deg, var(--wa-head), color-mix(in srgb, var(--wa-head) 92%, var(--wa-accent) 8%)) !important;
+  box-shadow: 0 1px 3px rgba(11,20,26,.10), 0 0 0 .5px var(--wa-head-line) !important;
+}
+
+/* chat rows: pill highlight instead of a full-width slab */
+.chat-row { border-radius: 12px; margin: 2px 8px; padding: 10px 10px; border-bottom: 0; }
+#chatlist { padding: 4px 0; }
+.chat-row.active { background: var(--wa-active) !important; }
+.chat-row.active .chat-title, .chat-row.active .chat-preview,
+.chat-row.active .chat-time, .chat-row.active .who { color: var(--wa-ink) !important; }
+.chat-row.active::before {
+  content: ''; position: absolute; left: 0; top: 22%; bottom: 22%; width: 3px;
+  border-radius: 3px; background: var(--wa-accent);
+}
+.chat-row { position: relative; }
+.chat-row:hover { background: var(--wa-active); }
+
+/* unread badge: brand gradient, slight pop */
+.badge {
+  background: #1f7a6d !important;
+  box-shadow: 0 2px 6px rgba(31,122,109,.3);
+}
+
+/* bubbles: layered shadow so they float on the doodle canvas */
+.msg .bubble { box-shadow: 0 1px 1px rgba(11,20,26,.10), 0 1px 3px rgba(11,20,26,.05) !important; }
+@media (prefers-color-scheme: dark) {
+  .msg .bubble { box-shadow: 0 1px 2px rgba(0,0,0,.45) !important; }
+}
+
+/* composer: lift off the canvas, green send with glow */
+#composer { box-shadow: 0 -2px 10px rgba(11,20,26,.07) !important; }
+@media (prefers-color-scheme: dark) { #composer { box-shadow: 0 -2px 12px rgba(0,0,0,.55) !important; } }
+#composer-send {
+  background: #1f7a6d !important;
+  box-shadow: 0 3px 10px rgba(31,122,109,.3);
+  transition: transform .1s ease, filter .15s ease;
+}
+#composer-send:active { transform: scale(.92); filter: brightness(1.05); }
+
+/* send feedback: the bubble springs in a touch more */
+@keyframes bubbleSendPop { 0% { transform: translateY(6px) scale(.97); opacity: .4; } 100% { transform: none; opacity: 1; } }
+.msg.out .bubble { animation: bubbleSendPop .24s cubic-bezier(.2,.9,.3,1.1); }
+
+/* day pills: frosted */
+.day-divider {
+  background: rgba(255,255,255,.78) !important; color: #54656f !important;
+  box-shadow: 0 1px 4px rgba(11,20,26,.12); backdrop-filter: blur(4px); font-weight: 600;
+}
+@media (prefers-color-scheme: dark) {
+  .day-divider { background: rgba(24,34,41,.82) !important; color: #8696a0 !important; }
+}
+
+/* ============================ call log v2 (readability pass) ============================ */
+.jc-call-search {
+  margin: 8px 12px 4px; padding: 10px 14px; border-radius: 999px;
+  border: 1px solid var(--divider); background: rgba(127,139,151,.12);
+  color: var(--tg-text); font-size: 14px; outline: none;
+}
+.jc-calls, .jc-calls-list { background: var(--tg-bg, #0b141a); }
+.jc-call-search:focus { border-color: var(--tg-accent); }
+.jc-call-day {
+  text-align: center; font-size: 12px; font-weight: 600; color: var(--tg-muted);
+  background: rgba(127,139,151,.10); margin: 10px auto 6px; padding: 3px 14px;
+  border-radius: 999px; width: fit-content;
+}
+body.dark .jc-call-day, [data-theme="dark"] .jc-call-day { background: rgba(255,255,255,.07); }
+.jc-call-row { min-height: 62px; padding: 9px 12px; align-items: center;
+  background: var(--tg-pane); border-bottom: 1px solid var(--divider);
+  animation: callIn .26s cubic-bezier(.2,.9,.3,1) backwards; }
+.jc-call-row:active { transform: scale(.985); background: rgba(51,144,236,.06); }
+.jc-call-name { display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+  font-size: 15.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.jc-call-time { flex: 0 0 auto; font-size: 12px; font-weight: 400; color: var(--tg-muted); }
+.jc-call-row.missed .jc-call-time { color: #e0483c; }
+.jc-call-sub { display: flex; align-items: center; gap: 6px; font-size: 13px; margin-top: 2px; }
+.jc-call-ic { font-weight: 700; font-size: 14px; }
+.jc-call-ic.in { color: #35a75a; }
+.jc-call-ic.out { color: var(--tg-accent); }
+.jc-call-ic.bad { color: #e0483c; }
+.jc-call-row.missed { background: rgba(224,72,60,.07); border-left: 3px solid #e0483c; }
+.jc-call-row.missed .jc-call-ic.bad { animation: badPulse 1.6s ease-in-out infinite; }
+@keyframes badPulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+@keyframes callIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes sheetDown { from { opacity: 1; } to { opacity: 0; transform: translateY(14px); } }
+.jc-call-again { background: rgba(51,144,236,.12); color: var(--tg-accent); }
+.jc-call-again.vid { background: rgba(120,80,220,.12); color: #8b5cf6; }
+
+
+/* ============================ alive layer ============================ */
+/* staggered chat list entrance: the app should look breathing, not printed */
+#chatlist > *:nth-child(1) { animation-delay: 0ms; }
+#chatlist > *:nth-child(2) { animation-delay: 30ms; }
+#chatlist > *:nth-child(3) { animation-delay: 60ms; }
+#chatlist > *:nth-child(4) { animation-delay: 90ms; }
+#chatlist > *:nth-child(5) { animation-delay: 120ms; }
+#chatlist > *:nth-child(6) { animation-delay: 150ms; }
+#chatlist > *:nth-child(7) { animation-delay: 180ms; }
+#chatlist > *:nth-child(8) { animation-delay: 210ms; }
+.chat-row { animation: callIn .3s cubic-bezier(.2,.9,.3,1) backwards; }
+.chat-row:active, .icon-btn:active, .btn:active, .jc-call-row:active { transform: scale(.98); }
+.icon-btn, .btn, .chat-row { transition: transform .12s ease, background .15s ease; }
+.unread, .badge, .chat-badge { animation: badgePop .28s cubic-bezier(.2,.9,.25,1.3); }
+.avatar-dot { animation: dotPulse 2.4s ease-out infinite; }
+.msg.out .bubble { box-shadow: 0 2px 10px rgba(51,144,236,.18); }
+#chatpane > .pane-head, #sidebar .pane-head { box-shadow: 0 1px 6px rgba(0,0,0,.10); }
+#call-screen { background: radial-gradient(120% 90% at 50% 0%, #1d2c3a 0%, #0b141a 60%) !important; }
+#toast { animation: toastBounce .32s cubic-bezier(.2,.9,.25,1.25); }
+@keyframes toastBounce { 0% { transform: translateY(16px) scale(.92); opacity: 0; } 60% { transform: translateY(-3px) scale(1.02); opacity: 1; } 100% { transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .chat-row, .jc-call-row, .avatar-dot, .jc-call-row.missed .jc-call-ic.bad, #toast { animation: none !important; }
+}
+
+/* ===== WELCOME / ONBOARDING (Phase 1) ===== */
+#welcome { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: 20px;
+  background: radial-gradient(1200px 800px at 50% -10%, #2a1622 0%, #16161d 55%, #0d0d12 100%); overflow-y: auto; }
+#welcome[hidden] { display: none; }
+.welcome-card { width: min(460px, 100%); background: #1f1f2a; border: 1px solid #23232e; border-radius: 20px;
+  padding: 34px 30px 26px; box-shadow: 0 18px 60px rgba(0,0,0,.55); text-align: center; }
+.welcome-logo { width: 64px; height: 64px; margin: 0 auto 14px; border-radius: 18px; display: grid; place-items: center;
+  background: #1f7a6d; color: #fff; font-weight: 800; font-size: 22px;
+  letter-spacing: .02em; box-shadow: 0 8px 24px rgba(31,122,109,.3); }
+.welcome-title { font-size: 22px; margin: 0 0 6px; color: #f4f4f6; }
+.welcome-sub { color: #b9b9c6; font-size: 14px; margin: 0 0 18px; line-height: 1.45; }
+.welcome-points { list-style: none; margin: 0 0 14px; padding: 0; text-align: left; display: grid; gap: 12px; }
+.welcome-points li { display: flex; gap: 12px; align-items: flex-start; }
+.welcome-points strong { display: block; font-size: 14px; color: #f4f4f6; }
+.welcome-points span:not(.wp-ico) { font-size: 12.5px; color: #b9b9c6; line-height: 1.4; }
+.wp-ico { flex: 0 0 auto; width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center;
+  background: rgba(31,122,109,.18); color: #5ecfbf; font-size: 17px; }
+.welcome-note { font-size: 11.5px; color: #b9b9c6; background: rgba(255,255,255,.05);
+  border-radius: 8px; padding: 8px 10px; margin: 0 0 16px; line-height: 1.4; }
+.welcome-cta { width: 100%; padding: 12px 16px; font-size: 15px; }
+.welcome-signin { display: block; margin: 12px auto 0; }
+
+.modal-hint { font-size: 12px; color: var(--tg-hint, #707579); padding: 6px 2px 2px; text-align: center; }
+/* Inbox empty state with CTA */
+.chatlist-empty { padding: 26px 18px; text-align: center; }
+.chatlist-empty .ce-title { font-weight: 600; color: var(--tg-title); margin-bottom: 6px; font-size: 14px; }
+.chatlist-empty .ce-sub { font-size: 12.5px; color: var(--tg-hint, #707579); margin-bottom: 14px; line-height: 1.4; }
+.chatlist-empty .btn { padding: 8px 18px; font-size: 13.5px; }
+
+/* ---- 14 Oct UX pass: kill accidental text selection on chrome (not messages) ---- */
+.chat-row, .chat-title, .chat-time, .chat-preview, .badge, .pane-head, .pane-title,
+.msg-meta, .day-divider, .msg-system, .chat-head-meta, #back-btn, .icon-btn, .send-btn {
+  -webkit-user-select: none; -moz-user-select: none; user-select: none;
+  -webkit-touch-callout: none;
+}
+/* message BODY text stays fully selectable/copyable */
+.msg-body, .msg-text { -webkit-user-select: text; user-select: text; }
+
+/* ---- call events: neutral outlined rows, not chat bubbles ---- */
+.call-event-msg { background: transparent !important; border: none !important; box-shadow: none !important;
+  align-self: center !important; margin: 4px auto !important; width: auto !important; max-width: 94% !important; padding: 0 !important; }
+.call-event-msg::before, .call-event-msg::after { display: none !important; }   /* tail + ticks */
+.call-event-msg .msg-meta { display: none !important; }
+.call-event-msg .bubble { background: transparent !important; padding: 0 !important; }
+.call-event-row { display: flex; justify-content: center; width: 100%; }
+.msg.call-event-msg { display: flex !important; }
+.call-event {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: #1c1c26; border: 1px solid #2c2c38;
+  color: #c9cdd4; border-radius: 14px; padding: 8px 12px;
+  font-size: 13px;
+  -webkit-user-select: none; user-select: none;
+}
+.call-ev-ic { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(226,92,92,.14); color: #e25c5c; flex: 0 0 auto; }
+.call-ev-ic .ic { width: 16px; height: 16px; }
+.call-ev-main { line-height: 1.3; }
+.call-ev-label { font-size: 13px; color: #e8e8ee; }
+.call-ev-time { font-size: 11px; color: #8a8a96; margin-top: 1px; }
+.call-ev-cb {
+  border: none; background: rgba(31,122,109,.16); color: #4fc3b0;
+  font-size: 12.5px; font-weight: 600; border-radius: 999px;
+  padding: 7px 14px; cursor: pointer; flex: 0 0 auto; min-height: 32px;
+}
+.call-ev-cb:active { background: rgba(31,122,109,.3); }
+
+/* ---- voice recording strip + preview + recipient player ---- */
+.rec-strip { display: flex; align-items: center; gap: 10px; margin: 0 10px 6px;
+  background: #241a1c; border: 1px solid rgba(226,92,92,.3); border-radius: 14px; padding: 8px 12px; }
+.rec-cancel { border: none; background: rgba(226,92,92,.16); color: #e25c5c; width: 30px; height: 30px;
+  border-radius: 50%; cursor: pointer; font-size: 14px; flex: 0 0 auto; }
+.rec-dot { width: 10px; height: 10px; border-radius: 50%; background: #e25c5c; flex: 0 0 auto;
+  animation: recPulse 1.2s ease-in-out infinite; }
+@keyframes recPulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+@media (prefers-reduced-motion: reduce) { .rec-dot { animation: none; } }
+.rec-timer { font-variant-numeric: tabular-nums; font-size: 13px; color: #f4f4f6; flex: 0 0 auto; }
+.rec-wave { flex: 1; height: 34px; min-width: 0; }
+.rec-hint { font-size: 11.5px; color: #8a8a96; flex: 0 0 auto; }
+#jc-mic.rec { color: #e25c5c !important; }
+.voice-preview { display: flex; align-items: center; gap: 10px; margin: 0 10px 6px;
+  background: #1f1f2a; border: 1px solid #2c2c38; border-radius: 14px; padding: 8px 12px; }
+.vp-play { border: none; background: #1f7a6d; color: #fff; width: 36px; height: 36px;
+  border-radius: 50%; cursor: pointer; font-size: 14px; flex: 0 0 auto; }
+.vp-info { flex: 1; min-width: 0; }
+.vp-title { font-size: 13px; color: #f4f4f6; }
+.vp-dur { font-size: 11.5px; color: #8a8a96; }
+.vp-del { border: none; background: rgba(226,92,92,.14); color: #e25c5c; width: 34px; height: 34px;
+  border-radius: 50%; cursor: pointer; font-size: 15px; flex: 0 0 auto; }
+.vp-send { border: none; background: #1f7a6d; color: #fff; font-weight: 600; font-size: 13px;
+  border-radius: 999px; padding: 9px 18px; cursor: pointer; min-height: 36px; }
+.vp-send:disabled { opacity: .6; }
+
+/* voice msg player (recipient + sender view in thread) */
+.vm-player { display: flex; align-items: center; gap: 9px; min-width: 210px; }
+.vm-play { border: none; background: rgba(255,255,255,.14); color: inherit; width: 34px; height: 34px;
+  border-radius: 50%; cursor: pointer; font-size: 13px; flex: 0 0 auto; display: grid; place-items: center; }
+.vm-wave { flex: 1; height: 26px; min-width: 0; cursor: pointer; }
+.vm-dur { font-size: 11px; opacity: .8; font-variant-numeric: tabular-nums; flex: 0 0 auto; }
+
+/* ---- attachment options sheet ---- */
+.jc-attach-inner { width: min(420px, 100%); padding: 18px 16px 20px; }
+.jc-attach-title { font-size: 15px; font-weight: 700; color: #f4f4f6; margin: 0 4px 14px; }
+.jc-attach-grid { display: flex; gap: 10px; }
+.jc-attach-opt {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  background: #23232e; border: 1px solid #2c2c38; border-radius: 16px;
+  padding: 16px 8px 12px; cursor: pointer; min-height: 88px;
+}
+.jc-attach-opt:active { background: #2b2b38; }
+.jc-attach-ic { font-size: 26px; line-height: 1; }
+.jc-attach-label { font-size: 12.5px; color: #c9cdd4; }
+
+/* ---- inline edit bar ---- */
+.editbar { display: flex; align-items: center; gap: 10px; margin: 0 10px 6px;
+  background: #1f1f2a; border: 1px solid rgba(79,195,176,.35); border-left: 3px solid #4fc3b0;
+  border-radius: 12px; padding: 8px 12px; }
+.editbar-main { flex: 1; min-width: 0; }
+.editbar-label { font-size: 12px; font-weight: 700; color: #4fc3b0; }
+.editbar-orig { font-size: 12.5px; color: #a9adb6; white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; margin-top: 2px; }
+.editbar-x { border: none; background: rgba(255,255,255,.08); color: #c9cdd4; width: 30px; height: 30px;
+  border-radius: 50%; cursor: pointer; font-size: 13px; flex: 0 0 auto; }
+.editbar-x:active { background: rgba(255,255,255,.16); }

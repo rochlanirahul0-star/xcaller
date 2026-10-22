@@ -1,0 +1,14 @@
+{
+  "version": "3.14",
+  "apk": "/chat/XCaller.apk",
+  "notes": "Public-readiness release: one XCaller teal theme, readable message ticks and search results, stronger security headers, uploads forced to download, and a single version across app and server.",
+  "releasedAt": 1792662340227,
+  "whatsNew": [
+    "One XCaller teal theme across the app: menus, call history, voice notes and update screens.",
+    "Message delivery ticks and new-chat search results are readable again.",
+    "Safer file handling and stricter browser security on the server.",
+    "This What's new panel now appears once after each update.",
+    "Desktop and phone layouts unchanged; your chats, calls and downloads stay in place."
+  ],
+  "sha256": "4fb2aa06dd2912f662b2c000ffe07428fb48a921f7577a8224d8533082aa0564"
+}

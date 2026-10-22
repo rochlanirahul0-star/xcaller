@@ -1,0 +1,14 @@
+.git
+node_modules
+data
+public/XCaller.apk
+android
+docs
+backups
+*.log
+*.db
+*.jks
+*.keystore
+ADMIN_PASSWORD.txt
+turn.json
+vapid.json

@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="dark" />
+<meta name="theme-color" content="#1f7a6d" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="XCaller" />
+<meta name="description" content="XCaller — secure messaging and voice/video calling." />
+<title>XCaller</title>
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+<link rel="icon" href="icon-192.png" sizes="192x192" />
+<link rel="stylesheet" href="css/app.css?v=3.14" />
+<link rel="stylesheet" href="css/corporate.css?v=3.14" />
+<link rel="stylesheet" href="css/telegram.css?v=3.14" />
+<link rel="stylesheet" href="css/voip.css?v=3.14" />
+<link rel="stylesheet" href="css/theme.css?v=3.14" />
+</head>
+<body>
+
+<!-- ============================ WELCOME (first run only) ============================ -->
+<div id="welcome" hidden>
+  <div class="welcome-card">
+    <div class="welcome-logo" aria-hidden="true">XC</div>
+    <h1 class="welcome-title">Welcome to XCaller</h1>
+    <p class="welcome-sub">Messaging and calls that belong to you — not to a phone number or an email address.</p>
+    <ul class="welcome-points">
+      <li><span class="wp-ico" aria-hidden="true">&#128100;</span><div><strong>Usernames, not phone numbers</strong><span>Find people by their username. Nobody needs your number or email.</span></div></li>
+      <li><span class="wp-ico" aria-hidden="true">&#128274;</span><div><strong>Your data stays here</strong><span>Accounts live on this server only. No third-party service in between.</span></div></li>
+      <li><span class="wp-ico" aria-hidden="true">&#127908;</span><div><strong>Chat, voice &amp; video</strong><span>One-to-one and group conversations, with real calls on top.</span></div></li>
+      <li><span class="wp-ico" aria-hidden="true">&#128273;</span><div><strong>One device at a time</strong><span>Signing in on a new device is deliberate — nothing gets silently kicked out.</span></div></li>
+    </ul>
+    <p class="welcome-note">Administered server — administrators can access messages. Nothing leaves this infrastructure.</p>
+    <button class="btn primary welcome-cta" id="welcome-start" type="button">Get Started</button>
+    <button class="link welcome-signin" id="welcome-signin" type="button">I already have an account — Sign In</button>
+  </div>
+</div>
+
+<!-- ============================ AUTH ============================ -->
+<div id="auth" hidden>
+  <div class="auth-card">
+    <div class="auth-logo" aria-hidden="true">XC</div>
+    <h1 class="auth-title">XCaller</h1>
+    <p class="auth-sub">Create your account — a username is all it takes. No phone number, no email.</p>
+
+    <!-- arriving through a group invite link -->
+    <div class="invite-banner" id="invite-banner" hidden>
+      <div class="invite-banner-title" id="invite-title"></div>
+      <div class="invite-banner-sub" id="invite-sub"></div>
+    </div>
+
+    <!-- login -->
+    <form id="login-form" class="auth-form" autocomplete="on" novalidate hidden>
+      <label class="field">
+        <span class="field-label">Username</span>
+        <input id="login-username" name="username" type="text" inputmode="text"
+               autocapitalize="none" autocomplete="username" spellcheck="false"
+               placeholder="your_username" required />
+      </label>
+      <label class="field">
+        <span class="field-label">Password</span>
+        <input id="login-password" name="password" type="password"
+               autocomplete="current-password" placeholder="••••••••" required />
+      </label>
+      <button class="btn primary" id="login-submit" type="submit">Log in</button>
+      <p class="form-err" id="login-error" role="alert"></p>
+      <p class="auth-switch">No account yet?
+        <button type="button" class="link" id="show-register">Create one</button>
+      </p>
+    </form>
+
+    <!-- register -->
+    <form id="register-form" class="auth-form" autocomplete="on" novalidate>
+      <label class="field">
+        <span class="field-label">Username</span>
+        <input id="reg-username" name="username" type="text" inputmode="text"
+               autocapitalize="none" autocomplete="username" spellcheck="false"
+               placeholder="lowercase_letters_0-9" required />
+        <span class="field-hint">3–20 characters: a–z, 0–9, underscore</span>
+        <span class="field-note" id="reg-username-note" role="status"></span>
+      </label>
+      <label class="field">
+        <span class="field-label">Display name</span>
+        <input id="reg-display" name="displayName" type="text" autocomplete="name"
+               placeholder="Your name" required />
+      </label>
+      <label class="field">
+        <span class="field-label">Password</span>
+        <input id="reg-password" name="password" type="password"
+               autocomplete="new-password" placeholder="••••••••" required />
+      </label>
+      <button class="btn primary" id="register-submit" type="submit">Create account</button>
+      <p class="form-err" id="register-error" role="alert"></p>
+      <p class="disclosure" id="disclosure">This server is administered; administrators can access messages.</p>
+      <p class="auth-switch">Already registered?
+        <button type="button" class="link" id="show-login">Log in</button>
+      </p>
+    </form>
+  </div>
+</div>
+
+<!-- ============================ APP ============================ -->
+<div id="app" hidden>
+
+  <!-- ------------------------- sidebar ------------------------- -->
+  <aside id="sidebar">
+    <header class="pane-head">
+      <button id="profile-btn" class="avatar-btn" type="button" title="Profile" aria-label="Profile">
+        <span id="me-avatar" class="avatar av-32" data-initial="?">?</span>
+      </button>
+      <div class="head-names">
+        <div id="me-name" class="head-title">…</div>
+        <div id="me-username" class="head-sub">@…</div>
+      </div>
+      <span id="net-dot" class="net-dot" title="Connecting" aria-hidden="true"></span>
+      <button id="new-group" class="icon-btn" type="button" title="New group" aria-label="New group">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 11.5a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4zM2 19.5c0-3.2 2.9-5.2 6.5-5.2s6.5 2 6.5 5.2M17 11.5a2.6 2.6 0 100-5.2M22 19.5c0-2.6-1.7-4.1-4.2-4.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button id="new-chat" class="icon-btn" type="button" title="New chat" aria-label="New chat">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </header>
+
+    <div class="searchbar">
+      <input id="chat-search" type="search" placeholder="Search"
+             autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Search" />
+    </div>
+
+    <div id="chatlist" role="list"></div>
+    <div id="search-results" class="search-results" hidden></div>
+  </aside>
+
+  <!-- ------------------------ chat pane ------------------------ -->
+  <main id="chatpane">
+    <header class="pane-head">
+      <button id="back-btn" class="icon-btn" type="button" title="Back" aria-label="Back">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button id="chat-avatar-btn" class="avatar-btn" type="button" tabindex="-1" aria-hidden="true">
+        <span id="chat-avatar" class="avatar av-32" data-initial="?">?</span>
+      </button>
+      <div class="head-names">
+        <div id="chat-title" class="head-title">Select a chat</div>
+        <div id="chat-sub" class="head-sub"></div>
+      </div>
+      <button id="callbtn-audio" class="icon-btn" type="button" title="Voice call" aria-label="Voice call">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 3.5h3.2l1.7 4.2-2.2 1.6a12.5 12.5 0 006.5 6.5l1.6-2.2 4.2 1.7v3.2a1.5 1.5 0 01-1.6 1.5A17.5 17.5 0 013 5.1 1.5 1.5 0 014.5 3.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+      <button id="callbtn-video" class="icon-btn" type="button" title="Video call" aria-label="Video call">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="12" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15 10.5l6-3.5v10l-6-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </header>
+
+    <div id="messages" tabindex="0"></div>
+
+    <div id="attach-preview" class="attach-preview" hidden>
+      <div class="attach-thumb" id="attach-thumb" hidden><img id="attach-thumb-img" alt="" /></div>
+      <span class="attach-file-ic" id="attach-file-ic" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8l-5-5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M14 3v5h5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+      </span>
+      <div class="attach-meta">
+        <span class="attach-preview-name"></span>
+        <span class="attach-preview-size"></span>
+      </div>
+      <button type="button" class="attach-preview-x" id="attach-cancel" aria-label="Remove attachment">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <form id="composer" autocomplete="off">
+      <button id="composer-attach" class="icon-btn" type="button" title="Attach a file" aria-label="Attach a file">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5l-8.6 8.6a5.4 5.4 0 01-7.6-7.6l8.6-8.6a3.6 3.6 0 015.1 5.1l-8.6 8.6a1.8 1.8 0 01-2.6-2.6l8-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <input id="file-input" type="file" hidden />
+      <textarea id="composer-input" rows="1" placeholder="Message" aria-label="Message"
+                enterkeyhint="send" autocapitalize="sentences"></textarea>
+      <button id="composer-send" class="send-btn" type="submit" title="Send" aria-label="Send">
+        <svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.2 20.3L21.5 12 3.2 3.7l3.6 7.1 9.4 1.2-9.4 1.2-3.6 7.1z" fill="currentColor"/></svg>
+      </button>
+    </form>
+  </main>
+</div>
+
+<!-- ========================= INCOMING CALL ========================= -->
+<div id="incoming" class="call-overlay" hidden>
+  <div class="incoming-inner">
+    <span id="incoming-avatar" class="avatar call-avatar pulse" data-initial="?">?</span>
+    <div id="incoming-name" class="incoming-name">…</div>
+    <div id="incoming-kind" class="incoming-kind">Incoming call</div>
+    <div class="incoming-actions">
+      <button id="incoming-decline" class="round-btn danger" type="button" title="Decline" aria-label="Decline">
+        <svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9.2c-3.1 0-5.9.6-8.3 1.7A1.5 1.5 0 002.8 12.4v2.4c0 .9.9 1.6 1.8 1.3l3.1-1c.7-.2 1.1-.9 1-1.6l-.1-1c1-.2 2.1-.3 3.4-.3s2.4.1 3.4.3l-.1 1c-.1.7.3 1.4 1 1.6l3.1 1c.9.3 1.8-.4 1.8-1.3v-2.4a1.5 1.5 0 00-.9-1.5c-2.4-1.1-5.2-1.7-8.3-1.7z" fill="currentColor"/></svg>
+      </button>
+      <button id="incoming-accept" class="round-btn ok" type="button" title="Accept" aria-label="Accept">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 3.5h3.2l1.7 4.2-2.2 1.6a12.5 12.5 0 006.5 6.5l1.6-2.2 4.2 1.7v3.2a1.5 1.5 0 01-1.6 1.5A17.5 17.5 0 013 5.1 1.5 1.5 0 014.5 3.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ========================== CALL SCREEN ========================== -->
+<div id="call-screen" hidden>
+  <header class="call-head">
+    <div id="call-title" class="call-title">Call</div>
+    <div id="call-timer" class="call-timer">00:00</div>
+  </header>
+  <div id="call-tiles"></div>
+  <footer class="call-bar">
+    <button id="call-mute" class="round-btn" type="button" title="Mute" aria-label="Mute">
+      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a3 3 0 013 3v5a3 3 0 01-6 0V6a3 3 0 013-3zM5.5 11a6.5 6.5 0 0013 0M12 17.5V21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <button id="call-cam" class="round-btn" type="button" title="Camera" aria-label="Camera">
+      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="12" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15 10.5l6-3.5v10l-6-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+    </button>
+    <button id="call-speaker" class="round-btn" type="button" title="Speaker" aria-label="Speaker" aria-pressed="false" hidden>
+      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3l4.5-3.5v12L7 14.5H4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M15.5 8.8a4.6 4.6 0 010 6.4M18 6.3a8 8 0 010 11.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <button id="call-add" class="round-btn" type="button" title="Add person" aria-label="Add person">
+      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 11.5a3.6 3.6 0 100-7.2 3.6 3.6 0 000 7.2zM2.5 20c0-3.6 3.3-5.6 7.5-5.6 1.2 0 2.3.2 3.3.5M18.5 8v7M15 11.5h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button id="call-share" class="round-btn" type="button" title="Share screen" aria-label="Share screen">
+      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4" width="19" height="12.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 20h8M12 16.5V20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <button id="call-end" class="round-btn danger" type="button" title="End call" aria-label="End call">
+      <svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9.2c-3.1 0-5.9.6-8.3 1.7A1.5 1.5 0 002.8 12.4v2.4c0 .9.9 1.6 1.8 1.3l3.1-1c.7-.2 1.1-.9 1-1.6l-.1-1c1-.2 2.1-.3 3.4-.3s2.4.1 3.4.3l-.1 1c-.1.7.3 1.4 1 1.6l3.1 1c.9.3 1.8-.4 1.8-1.3v-2.4a1.5 1.5 0 00-.9-1.5c-2.4-1.1-5.2-1.7-8.3-1.7z" fill="currentColor"/></svg>
+    </button>
+  </footer>
+</div>
+
+<!-- ============================= MODAL ============================= -->
+<div id="modal" hidden>
+  <div class="modal-backdrop" data-modal-close="1"></div>
+  <div class="modal-sheet" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-head">
+      <div id="modal-title" class="modal-title"></div>
+      <button id="modal-close" class="icon-btn" type="button" title="Close" aria-label="Close">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<div id="toast" aria-live="polite" aria-atomic="true"></div>
+
+<script src="js/version.js?v=3.14"></script>
+<script src="js/app.js?v=3.14"></script>
+<script src="js/calls.js?v=3.14"></script>
+<script src="js/features.js?v=3.14"></script>
+<script src="js/push.js?v=3.14"></script>
+<script src="js/ui2.js?v=3.14"></script>
+</body>
+</html>

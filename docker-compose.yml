@@ -1,0 +1,15 @@
+services:
+  xcaller:
+    build: .
+    container_name: xcaller
+    restart: unless-stopped
+    ports:
+      - "3910:3910"
+    environment:
+      PORT: "3910"
+      HOST: "0.0.0.0"
+    volumes:
+      - ./data:/data
+    # Push keys and TURN credentials are optional; drop them in data/ to enable.
+    #   data/vapid.json   from `npx web-push generate-vapid-keys`
+    #   data/turn.json    {"host":"turn.example.com","secret":"..."}

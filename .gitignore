@@ -1,0 +1,33 @@
+# runtime data and secrets — never commit
+node_modules/
+data/
+public/XCaller.apk
+*.apk
+*.aab
+*.idsig
+*.jks
+*.keystore
+ADMIN_PASSWORD.txt
+turn.json
+vapid.json
+.env
+.env.*
+!.env.example
+
+# build output
+android/out/
+android/dist/
+out/
+dist/
+*.log
+*.db
+*.db-shm
+*.db-wal
+
+# local junk
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
+public/XCaller.apk
+public/XCaller.apk.sha256

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>XCaller · Owner console</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="css/admin.css?v=46" />
+<link rel="stylesheet" href="css/corporate-admin.css?v=46" />
+</head>
+<body>
+
+<!-- ------------------------------- sign in ------------------------------- -->
+<section id="gate" class="gate">
+  <form id="gate-form" class="gate-card">
+    <div class="gate-logo">XC</div>
+    <h1>Owner console</h1>
+    <p class="gate-sub">XCaller administration</p>
+    <input id="gate-user" type="text" placeholder="admin" autocomplete="username" autocapitalize="none" spellcheck="false" />
+    <input id="gate-pass" type="password" placeholder="password" autocomplete="current-password" />
+    <button id="gate-go" type="submit">Sign in</button>
+    <p id="gate-error" class="gate-error" hidden></p>
+    <p class="gate-note">Only accounts with the administrator role can open this page.</p>
+  </form>
+</section>
+
+<!-- --------------------------------- app --------------------------------- -->
+<div id="app" hidden>
+  <header class="top">
+    <div class="brand">XC <b>XCaller</b> owner console</div>
+    <nav class="tabs">
+      <button class="tab on" data-tab="overview">Overview</button>
+      <button class="tab" data-tab="users">Users</button>
+      <button class="tab" data-tab="chats">Chats</button>
+      <button class="tab" data-tab="messages">Messages</button>
+      <button class="tab" data-tab="calls">Calls</button>
+      <button class="tab" data-tab="versions">Versions</button>
+      <button class="tab" data-tab="live">Live</button>
+    </nav>
+    <div class="who">
+      <span id="live-dot" class="dot" title="live feed"></span>
+      <span id="who-name"></span>
+      <button id="reload" type="button" title="Load the newest version of this page">Reload</button>
+      <button id="logout" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- overview -->
+    <section class="panel on" id="panel-overview">
+      <div id="stats" class="cards"></div>
+      <div id="activity"></div>
+      <h2>Recent sign-ups</h2>
+      <div id="recent" class="list"></div>
+      <h2>Admin actions (audit log)</h2>
+      <div id="audit" class="list"></div>
+    </section>
+
+    <!-- users -->
+    <section class="panel" id="panel-users">
+      <div class="row">
+        <input id="user-q" type="search" placeholder="Search username or display name" />
+        <label class="chk"><input id="user-banned-only" type="checkbox" /> blocked only</label>
+        <button id="users-reload" type="button" class="ghost">Reload</button>
+      </div>
+      <div id="users" class="list"></div>
+    </section>
+
+    <!-- chats -->
+    <section class="panel" id="panel-chats">
+      <div class="row">
+        <label class="chk"><input id="chats-direct" type="checkbox" /> direct chats only</label>
+        <button id="chats-reload" type="button" class="ghost">Reload</button>
+      </div>
+      <div id="chats" class="list"></div>
+    </section>
+
+    <!-- messages -->
+    <section class="panel" id="panel-messages">
+      <form id="msg-form" class="row">
+        <input id="msg-q" type="search" placeholder="Text to search for…" />
+        <input id="msg-user" type="search" placeholder="username" class="narrow" />
+        <input id="msg-chat" type="search" placeholder="chat id" class="narrow" />
+        <button type="submit">Search</button>
+      </form>
+      <p class="hint">Every message on the server is searchable here, including private one-to-one chats.</p>
+      <div id="messages" class="list"></div>
+    </section>
+
+    <!-- calls -->
+    <section class="panel" id="panel-calls">
+      <div class="row"><button id="calls-reload" type="button" class="ghost">Reload</button></div>
+      <div id="calls" class="list"></div>
+    </section>
+
+    <!-- versions -->
+    <section class="panel" id="panel-versions">
+      <div class="row">
+        <span id="ver-current" class="muted"></span>
+        <button id="ver-refresh" type="button" class="ghost">Refresh</button>
+        <button id="ver-announce" type="button">Push update notice</button>
+      </div>
+      <p class="hint">Who is on which app build. Anything below the current version cannot auto-update unless it is 3.2+; hand them the APK link below, then use "Push update notice" to force the modal on every open app and notification on the next sync.</p>
+      <div class="row">
+        <b>APK link (send to any user):</b>
+        <code id="ver-apk-link"></code>
+        <button id="ver-copy" type="button" class="ghost">Copy</button>
+      </div>
+      <div id="versions" class="list"></div>
+    </section>
+
+    <!-- live -->
+    <section class="panel" id="panel-live">
+      <p class="hint">A live feed of messages and sign-ins as they happen. Nothing here is stored twice — it mirrors what the server is doing right now.</p>
+      <div id="live" class="list feed"></div>
+    </section>
+  </main>
+
+  <!-- transcript viewer -->
+  <div id="viewer" class="viewer" hidden>
+    <header>
+      <b id="viewer-title">Chat</b>
+      <span id="viewer-sub" class="muted"></span>
+      <button id="viewer-close" type="button" class="ghost">Close</button>
+    </header>
+    <div id="viewer-body" class="viewer-body"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="js/admin.js?v=46"></script>
+</body>
+</html>

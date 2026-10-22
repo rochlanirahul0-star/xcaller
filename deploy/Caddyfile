@@ -1,0 +1,16 @@
+# XCaller behind Caddy (automatic HTTPS + WebSocket).
+# Replace the hostname and point it at the running container/service.
+xcaller.example.com {
+    encode zstd gzip
+    request_body {
+        max_size 210MB
+    }
+
+    redir /chat /chat/
+    reverse_proxy /chat/* 127.0.0.1:3910
+
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        -Server
+    }
+}

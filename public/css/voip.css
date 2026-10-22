@@ -1,0 +1,449 @@
+/* ============================================================================
+   XCaller — VoIP surface (v3.8 redesign)
+   Loaded LAST: it intentionally overrides the call/incoming styling in
+   app.css, corporate.css and telegram.css. Everything the JS toggles keeps
+   its contract: #call-title / #call-timer / #call-status / #call-tiles,
+   .call-tile(.self,.has-video,.no-frames,.audio-only), .round-btn(.off,.on),
+   #call-screen(.ringing), #incoming, #incoming-*.
+   ========================================================================== */
+
+/* ---------- typing indicator: real animated dots (the old CSS `content`
+   animation never animated on many browsers — three frozen dots) ---------- */
+#chat-sub.typing::after { content: none !important; }
+.t-dot {
+  display: inline-block;
+  margin-left: 2px;
+  animation: xc-tdot 1.2s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+span.t-dot:nth-of-type(2) { animation-delay: .15s; }
+span.t-dot:nth-of-type(3) { animation-delay: .3s; }
+@keyframes xc-tdot {
+  0%, 60%, 100% { opacity: .25; transform: translateY(0); }
+  30%           { opacity: 1;   transform: translateY(-2.5px); }
+}
+
+/* ---------- attachment preview (pre-send, WhatsApp style) ----------------- */
+.attach-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 12px 6px;
+  padding: 10px 12px;
+  background: #16232f;
+  border: 1px solid rgba(255, 255, 255, .09);
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .38);
+  animation: xc-att-in .18s ease-out;
+}
+@keyframes xc-att-in { from { opacity: 0; transform: translateY(8px); } }
+.attach-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex: 0 0 auto;
+  background: #0b1520;
+}
+.attach-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.attach-file-ic {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: rgba(47, 134, 255, .16);
+  color: #5aa7ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+.attach-file-ic svg { width: 24px; height: 24px; }
+.attach-meta {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.attach-preview-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.attach-preview-size { font-size: 12px; color: rgba(255, 255, 255, .55); }
+.attach-preview-x {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(255, 255, 255, .1);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+.attach-preview-x:active { background: rgba(255, 255, 255, .22); }
+.attach-preview-x svg { width: 16px; height: 16px; }
+
+/* ============================================================================
+   CALL SCREEN — full-bleed stage, floating header, glass control dock
+   ========================================================================== */
+
+#call-screen {
+  background:
+    radial-gradient(130% 80% at 50% -10%, #1b3d61 0%, #0d2236 48%, #060f1a 100%) !important;
+  animation: xc-call-in .3s cubic-bezier(.2, .7, .3, 1);
+  overflow: hidden;
+}
+@keyframes xc-call-in { from { opacity: 0; transform: scale(1.045); } }
+
+/* legibility scrims above the video, below the text */
+#call-screen::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 34%;
+  background: linear-gradient(180deg, rgba(4, 10, 18, .72) 0%, rgba(4, 10, 18, .25) 55%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+#call-screen::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 30%;
+  background: linear-gradient(0deg, rgba(4, 10, 18, .78) 0%, rgba(4, 10, 18, .3) 60%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ---------- header: floating, centered, over the stage -------------------- */
+#call-screen .call-head {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  z-index: 3;
+  border: 0 !important;
+  background: none !important;
+  padding: calc(16px + env(safe-area-inset-top)) 16px 10px;
+  pointer-events: none;
+}
+.call-title {
+  color: #fff;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: .1px;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, .55);
+}
+.call-timer {
+  color: rgba(255, 255, 255, .85);
+  font-size: 13.5px;
+  font-weight: 500;
+  margin-top: 3px;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, .55);
+}
+#call-status {
+  color: rgba(255, 255, 255, .8);
+  font-size: 13.5px;
+  font-weight: 500;
+  margin-top: 3px;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, .55);
+}
+#call-screen.ringing #call-status { animation: xc-status-pulse 1.5s ease-in-out infinite; }
+@keyframes xc-status-pulse { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+/* the old design painted a second "Calling…" via a pseudo-element — one status line is enough */
+#call-screen.ringing .call-title::after { content: none !important; }
+
+/* ---------- the stage ------------------------------------------------------ */
+#call-screen #call-tiles {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: block;                       /* inline grid-template from JS is inert */
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+  padding-bottom: 118px;                /* group grid clears the control dock */
+}
+/* 1-to-1 (and any ≤2 tile call): the peer IS the screen */
+#call-tiles.single, #call-tiles.duo { display: block; padding-bottom: 0; }
+#call-tiles.single .call-tile, #call-tiles.duo .call-tile { position: absolute; }
+
+/* the remote stage: edge to edge, no chrome */
+#call-tiles.single .call-tile:not(.self),
+#call-tiles.duo .call-tile:not(.self) {
+  inset: 0;
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  background: #081524;
+}
+/* self view: floating PiP card, top-right (FaceTime position) — 1-to-1 only,
+   because in a group call it must behave as a normal grid tile */
+#call-tiles.single .call-tile.self,
+#call-tiles.duo .call-tile.self {
+  position: absolute;
+  top: calc(74px + env(safe-area-inset-top));
+  right: 14px;
+  left: auto;
+  bottom: auto;
+  width: 30%;
+  max-width: 132px;
+  min-width: 88px;
+  min-height: 0;
+  aspect-ratio: 3 / 4;
+  height: auto;
+  z-index: 4;
+  border: 2px solid rgba(255, 255, 255, .55);
+  border-radius: 18px;
+  box-shadow: 0 14px 34px rgba(2, 8, 16, .55);
+  overflow: hidden;
+}
+#call-tiles.single .call-tile.self .tile-label,
+#call-tiles.duo .call-tile.self .tile-label { display: none; }
+
+/* group calls: clean floating tiles */
+#call-tiles:not(.single):not(.duo) {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 10px;
+  padding: 10px;
+  padding-top: calc(86px + env(safe-area-inset-top));
+  overflow: auto;
+}
+#call-tiles:not(.single):not(.duo) .call-tile {
+  position: relative;
+  inset: auto;
+  min-height: 150px;
+  height: 100%;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, .1);
+  background: #102436;
+  box-shadow: 0 8px 22px rgba(2, 8, 16, .35);
+}
+
+/* shared tile chrome */
+.call-tile { overflow: hidden; }
+.call-tile .tile-video { object-fit: cover; background: #0b1a29; }
+.call-tile.has-video .tile-video { opacity: 1; }
+.call-tile.has-video .tile-avatar,
+.call-tile.has-video .tile-label { display: none; }
+.call-tile.no-frames .tile-video { opacity: 0 !important; }
+.call-tile.no-frames .tile-avatar,
+.call-tile.no-frames .tile-label { display: flex; }
+.call-tile .tile-flags {
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, .6);
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+}
+
+/* voice-call presentation: a big calm avatar instead of a dead rectangle */
+#call-tiles.single .call-tile:not(.self) .tile-avatar,
+#call-tiles.duo .call-tile:not(.self) .tile-avatar {
+  width: 118px;
+  height: 118px;
+  font-size: 46px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 10px rgba(255, 255, 255, .05), 0 0 60px rgba(64, 140, 255, .28);
+}
+#call-tiles.single .call-tile:not(.self) .tile-label,
+#call-tiles.duo .call-tile:not(.self) .tile-label {
+  position: static;
+  margin: 16px 12px 0;
+  background: none;
+  padding: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, .92);
+  max-width: 90%;
+  text-align: center;
+}
+#call-tiles .call-tile .tile-label { color: #fff; }
+
+/* ---------- control dock: frosted glass pill ------------------------------ */
+.call-bar {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(9, 19, 31, .58);
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 34px;
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  box-shadow: 0 18px 44px rgba(2, 8, 16, .5);
+}
+.call-bar .round-btn {
+  width: 54px;
+  height: 54px;
+  margin-bottom: 0;
+  border: 1px solid rgba(255, 255, 255, .12);
+  background: rgba(255, 255, 255, .13);
+  color: #f4f8fd;
+  transition: background .15s ease, transform .1s ease, border-color .15s ease;
+}
+.call-bar .round-btn .ic { width: 23px; height: 23px; }
+.call-bar .round-btn::after {
+  content: attr(title);
+  top: calc(100% + 7px);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .3px;
+  color: rgba(255, 255, 255, .62);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, .6);
+}
+.call-bar .round-btn:active { transform: scale(.9); }
+.call-bar .round-btn.off {
+  color: #ffb1ad;
+  background: rgba(255, 82, 82, .2);
+  border-color: rgba(255, 92, 92, .5);
+}
+.call-bar .round-btn.off::after { color: rgba(255, 177, 173, .85); }
+.call-bar .round-btn.on {
+  color: #cfe6ff;
+  background: rgba(46, 134, 255, .3);
+  border-color: rgba(46, 134, 255, .6);
+}
+.call-bar .round-btn.danger,
+#call-end {
+  width: 76px;
+  border-radius: 28px;
+  background: linear-gradient(180deg, #ff5b57 0%, #e23c38 100%);
+  border-color: rgba(0, 0, 0, .18);
+  box-shadow: 0 10px 26px rgba(226, 60, 56, .42);
+}
+#call-end .ic { width: 26px; height: 26px; }
+
+/* ---------- ringing refinement -------------------------------------------- */
+#call-screen.ringing #call-tiles .call-tile { animation: none; }
+#call-screen.ringing .tile-avatar { animation: xc-ring 1.6s ease-out infinite; }
+
+/* ============================================================================
+   INCOMING CALL — same design family
+   ========================================================================== */
+.call-overlay {
+  background:
+    radial-gradient(130% 90% at 50% -10%, #1c4066 0%, #0e2338 52%, #071120 100%) !important;
+  animation: xc-call-in .3s cubic-bezier(.2, .7, .3, 1);
+}
+.call-avatar {
+  width: 128px;
+  height: 128px;
+  font-size: 50px;
+  box-shadow: 0 0 0 12px rgba(255, 255, 255, .05), 0 0 70px rgba(64, 140, 255, .3);
+}
+.pulse { animation: xc-inc-pulse 1.9s ease-in-out infinite; }
+@keyframes xc-inc-pulse {
+  0%, 100% { transform: scale(1);    box-shadow: 0 0 0 10px rgba(255,255,255,.05), 0 0 70px rgba(64,140,255,.3); }
+  50%      { transform: scale(1.04); box-shadow: 0 0 0 22px rgba(255,255,255,.02), 0 0 90px rgba(64,140,255,.42); }
+}
+.incoming-name { color: #fff; font-size: 26px; font-weight: 700; letter-spacing: .1px; }
+.incoming-kind { color: rgba(255, 255, 255, .72); font-size: 14.5px; font-weight: 500; margin-top: 7px; }
+.incoming-actions { margin-top: 48px; gap: 64px; }
+.incoming-actions .round-btn { position: relative; width: 66px; height: 66px; border: 0; }
+.incoming-actions .round-btn .ic { width: 27px; height: 27px; }
+.incoming-actions .round-btn.danger {
+  background: linear-gradient(180deg, #ff5b57 0%, #e23c38 100%);
+  box-shadow: 0 12px 30px rgba(226, 60, 56, .4);
+}
+.incoming-actions .round-btn.ok {
+  background: linear-gradient(180deg, #3ecf6f 0%, #23a94f 100%);
+  box-shadow: 0 12px 30px rgba(35, 169, 79, .4);
+}
+.incoming-actions .round-btn::after {
+  content: attr(title);
+  position: absolute;
+  top: calc(100% + 9px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, .68);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ---------- small screens stay clean -------------------------------------- */
+@media (max-height: 620px) {
+  #call-tiles.single .call-tile:not(.self) .tile-avatar,
+  #call-tiles.duo .call-tile:not(.self) .tile-avatar { width: 92px; height: 92px; font-size: 38px; }
+  .call-bar .round-btn { width: 48px; height: 48px; }
+  .call-bar .round-btn::after { display: none; }
+}
+
+/* ================= 3.12 redesign fixes ================= */
+/* R2: labels were absolutely positioned BELOW the dock (clipped by nav bar).
+   Now every button is a vertical stack inside the dock — nothing escapes the pill. */
+.call-bar .round-btn {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; width: 58px; height: 58px; border-radius: 18px;
+}
+.call-bar .round-btn::after {
+  content: attr(title);
+  position: static;
+  transform: none;
+  left: auto; top: auto;
+  font-size: 10px; font-weight: 600; letter-spacing: .2px;
+  color: rgba(255,255,255,.66); text-shadow: none; white-space: nowrap;
+  display: block;
+}
+.call-bar .round-btn.off::after { color: rgba(255,177,173,.9); }
+.call-bar .round-btn .ic { width: 20px; height: 20px; flex: 0 0 auto; }
+#call-end { flex-direction: row; border-radius: 28px; }
+#call-end::after { display: none; }      /* icon-only end call: universally understood */
+@media (max-height: 620px) {
+  .call-bar .round-btn::after { font-size: 9px; }
+  .call-bar .round-btn { width: 50px; height: 50px; }
+}
+/* R3: voice-only 1:1 — the self PiP is noise, hide it completely */
+#call-tiles.single .call-tile.self.self-hidden,
+#call-tiles.duo .call-tile.self.self-hidden { display: none; }
+/* teal design system replaces the blue family */
+#call-screen { background: radial-gradient(130% 80% at 50% -10%, #14332e 0%, #0b1f22 48%, #050d0f 100%) !important; }
+.call-overlay { background: radial-gradient(130% 90% at 50% -10%, #14332e 0%, #0b1f22 52%, #050d0f 100%) !important; }
+#call-tiles.single .call-tile:not(.self) .tile-avatar,
+#call-tiles.duo .call-tile:not(.self) .tile-avatar {
+  box-shadow: 0 0 0 10px rgba(255,255,255,.05), 0 0 60px rgba(79,195,176,.25);
+}
+.call-bar { background: rgba(6, 18, 20, .62); border-color: rgba(79,195,176,.18); }
+.call-bar .round-btn.on { color: #bfeee6; background: rgba(31,122,109,.35); border-color: rgba(79,195,176,.6); }
+#call-status[data-state="reconnecting"] { color: #ffcf7d; }
+#call-status[data-state="reconnecting"]::before {
+  content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: #ffcf7d; margin-right: 7px; vertical-align: middle;
+  animation: xc-status-pulse 1.2s ease-in-out infinite;
+}
+
+/* ---- screen share: show the whole screen at its true aspect ratio ---- */
+.call-tile.sharing .tile-video,
+.call-tile .tile-video.src-screen { object-fit: contain !important; background: #000; }
+.call-tile.sharing { border: 2px solid rgba(79,195,176,.75) !important; }
+.call-tile.sharing::before {
+  content: 'You are sharing your screen';
+  position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+  z-index: 5; background: rgba(6,24,22,.85); color: #7fded0;
+  font-size: 11.5px; font-weight: 600; padding: 5px 12px; border-radius: 999px;
+  white-space: nowrap; pointer-events: none;
+}
+#call-share.sharing { background: rgba(31,122,109,.45) !important; border-color: rgba(79,195,176,.7) !important; color: #bfeee6 !important; }
+#call-share.sharing::after { content: 'Stop share' !important; color: #bfeee6 !important; }
+/* self PiP: fit the real screen shape instead of a fixed 3/4 */
+#call-tiles.single .call-tile.self.is-screen,
+#call-tiles.duo .call-tile.self.is-screen { aspect-ratio: auto; height: 42vw; max-height: 180px; }

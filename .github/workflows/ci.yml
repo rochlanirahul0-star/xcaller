@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  server:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Syntax check
+        run: |
+          node --check server.js
+          node --check db.js
+          node --check push.js
+          node --check turn.js
+      - name: Realtime + WebRTC signalling smoke
+        run: bash scripts/ci-smoke.sh
+      - name: Dependency audit (advisory)
+        continue-on-error: true
+        run: npm audit --omit=dev --audit-level=high
