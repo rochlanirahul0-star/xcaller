@@ -65,15 +65,21 @@ test on a real device first.
 `com.jarvis.chat` is the current application id. It can never change without a
 new install; decide before the first public release.
 
-## CI
+## Release
 
-`.github/workflows/android-release.yml` builds on a tag and creates a GitHub
-release. Required secrets:
+The preferred path is from the repo root:
 
-- `XC_KEYSTORE_B64` — base64 of the release keystore
-- `XC_KEYSTORE_PASS`
-- `XC_KEY_PASS`
-- `XC_KEY_ALIAS` (optional; defaults to `xcaller`)
+```bash
+./scripts/release-local.sh
+```
+
+It builds, signs, updates `version.json`, pushes the version commit and creates
+the GitHub release. Values come from a local, gitignored `.release.env`; see
+`docs/RELEASING.md`.
+
+There is also an optional manual **Android build** workflow for maintainers who
+want a signed APK as a GitHub Actions artifact. It does not publish a release and
+requires the signing secrets listed in `docs/RELEASING.md`.
 
 ## Permissions
 

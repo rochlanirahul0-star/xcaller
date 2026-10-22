@@ -31,3 +31,6 @@ __pycache__/
 *.pyc
 public/XCaller.apk
 public/XCaller.apk.sha256
+
+# local release credentials
+.release.env

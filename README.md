@@ -1,6 +1,6 @@
 # XCaller
 
-**Messaging and calls that don't need your phone number — or a tech giant.**
+**Messaging and calls that don't need your phone number nor a tech giant.**
 
 XCaller is an open-source messenger you can actually own. Pick a username,
 message people, make voice and video calls, and share your screen. No phone
